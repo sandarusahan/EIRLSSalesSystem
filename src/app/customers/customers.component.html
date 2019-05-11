@@ -1,38 +1,133 @@
-<form>
-    <div class="form-group">
-      <label for="name">Email address</label>
-      <input type="name" class="form-control" id="name" placeholder="Name">
+<div class="container shadow pb-3 pt-2">
+  <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+
+    <div class="btn-group" role="group" aria-label="First group">
+      <button class="btn btn-primary" routerLink="../"><i class="fas fa-chevron-circle-left"></i> Customers</button>
+
     </div>
-    <div class="form-group">
-      <label for="email">E-mail</label>
-      <input type="email" class="form-control" id="email" placeholder="someone@email.com">
+
+    <div class="btn-group ml-3" role="group" aria-label="First group">
+      <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button>
+      <button type="button" class="btn btn-secondary" (click)="onEditClick()">Edit</button>
+      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">Delete</button>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete !</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete customer {{customer.customerName}} ?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" (click)="onDeleteClick(customer.customerId)" data-dismiss="modal">Yes! Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
-    <div class="form-group">
-      <label for="contact">Contact Number</label>
-      <input type="tel" class="form-control" id="name" placeholder="Personal/Company">
-    </div>
-    <div class="form-group">
-      <label for="address">Address</label>
-      <input type="name" class="form-control" id="address" placeholder="Personal/Company">
-    </div>
-    <div class="form-group">
-      <label for="country">Country</label>
-      <select class="form-control" id="country">
-        <option>Sri Lanka</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </select>
-    </div>
-    <div class="form-group">
-        <label for="salesrep">Sales Rep</label>
-        <select class="form-control" id="salesrep">
-          <option>Rep 01</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
+
+    
+  </div>
+
+  
+
+  <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" class="mb-3">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group-sm">
+          <label for="id">ID</label>
+          <input type="id" class="form-control form-control-sm" id="id" placeholder="Customer ID generates automatically"
+            [(ngModel)]="customer.customerId" name="customerId" [readonly]="true">
+        </div>
       </div>
+      <div class="col-6">
+        <div class="form-group-sm">
+          <label for="name">Name</label>
+          <input type="name" class="form-control form-control-sm" id="name" placeholder="Name"
+            [(ngModel)]="customer.customerName" name="customerName" [readonly]="crudActionService.readonlybool"
+            required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group-sm">
+          <label for="tele">Contact Number</label>
+          <input type="tel" class="form-control form-control-sm" id="tele" placeholder="Contact Number"
+            [(ngModel)]="customer.customerTelephone" name="customerTelephone"
+            [readonly]="crudActionService.readonlybool" pattern="[0-9]{10}" required>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group-sm">
+          <label for="email">E-mail</label>
+          <input type="email" class="form-control form-control-sm" id="email" placeholder="someone@email.com"
+            [(ngModel)]="customer.customerEmail" name="customerEmail" [readonly]="crudActionService.readonlybool"
+            required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4">
+        <div class="form-group-sm">
+          <label for="mainloc">Main Location</label>
+          <input type="address" class="form-control form-control-sm" id="mainloc" placeholder="Main Location"
+            [(ngModel)]="customer.customerMainLocation" name="customerMainLocation"
+            [readonly]="crudActionService.readonlybool" required>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group-sm">
+          <label for="deliveryLocation">Delivery Location</label>
+          <input type="address" class="form-control form-control-sm" id="deliveryLocation"
+            placeholder="Delivery Address" [(ngModel)]="customer.customerDeliveryLocation"
+            name="customerDeliveryLocation" [readonly]="crudActionService.readonlybool">
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group-sm">
+          <label for="collectionLocation">Collection Location</label>
+          <input type="address" class="form-control form-control-sm" id="collectionLocation"
+            placeholder="Collection Location Address" [(ngModel)]="customer.customerCollectionLocation"
+            name="customerCollectionLocation" [readonly]="crudActionService.readonlybool">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group-sm">
+          <label for="customertype">Customer Type</label>
+          <select class="form-control form-control-sm" id="customertype" [disabled]="crudActionService.readonlybool"
+            [(ngModel)]="customer.customerType" name="customerType">
+            <option>Lead</option>
+            <option>Customer</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group-sm">
+          <label for="paymentFlag">Payment Status</label>
+          <select class="form-control form-control-sm" id="paymentFlag" [disabled]="crudActionService.readonlybool"
+            [(ngModel)]="customer.customerPaymentFlag" name="customerPaymentFlag">
+            <option value="CLEAR">Clear</option>
+            <option value="BLOCKED">Blocked</option>
+            <option value="PENDING">Pending</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary mt-3" *ngIf="!crudActionService.readonlybool"
+      [disabled]="!form.valid">Submit</button>
   </form>
+</div>

@@ -1,45 +1,46 @@
+
+<button class="btn btn-primary mb-3" routerLink="../"><i class="fas fa-chevron-circle-left"></i> Inquiry</button>
+
 <form>
-  <div class="row" id="center">
-    <div class="form-group col-11">
-      <input type="text" class="form-control" id="name" placeholder="Enter Order ID">
-    </div>
-    <div class="form-group col-1">
-      <button class="btn btn-primary">Find</button>
-    </div>
-  </div>
+  
     <div class="container">
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="status">Oder Status</label>
+            <label for="status">Inquiry ID</label>
             <input type="text" class="form-control" id="status">
           </div>
           <div class="form-group">
-            <label for="inqid">Inquiry ID</label>
-            <input type="text" class="form-control" id="inqid">
-          </div>
-          <div class="form-group">
-            <label for="orderdate">Order Date</label>
-            <input type="date" class="form-control" id="orderdate">
+            <label for="pickitem">Item ID</label>
+            <div class="row">
+              
+            <div class="col-7">
+                <select class="form-control" id="pickitem">
+                    <option>Select Item</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" id="qty" placeholder="Quantity">
+            </div> 
+            <div class="col">
+              <a href="#">X</a>
+            </div>
+          </div>           
+              <a href="#">Add another item</a>
           </div>
           <div class="form-group">
             <label for="deldate">Delivery date</label>
             <input type="date" class="form-control" id="deldate">
           </div>
           <div class="form-group">
-            <label for="deltype">Delivery Type</label>
-            <select class="form-control" id="deltype">
-                <option>Ship</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
+            <label for="orderdate">Order Date</label>
+            <input type="date" class="form-control" id="orderdate">
           </div>
-          <div class="form-group">
-            <label for="deladdress">Delivery Address</label>
-            <input type="text" class="form-control" id="deladdress">
-          </div>
+          
         </div>
         <div class="col">
             <span>Customer Details</span>

@@ -10,6 +10,7 @@ export class InquiryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

@@ -1,7 +1,8 @@
+import { CrudActionsManageService } from './Services/crud-actions-manage.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,14 @@ import { OrdersComponent } from './orders/orders.component';
 import { ReturnsComponent } from './returns/returns.component';
 import { UserComponent } from './user/user.component';
 import { CrudactionsComponent } from './crudactions/crudactions.component';
+import { FormsModule } from '@angular/forms';
+import { FindCutomersComponent } from './find-cutomers/find-cutomers.component';
+import { MainComponent } from './main/main.component';
+import { FindInquiryComponent } from './find-inquiry/find-inquiry.component';
+import { FindOrdersComponent } from './find-orders/find-orders.component';
+import { FindReturnsComponent } from './find-returns/find-returns.component';
+import { CustomerModComponent } from './customer-mod/customer-mod.component';
+
 
 @NgModule({
   declarations: [
@@ -24,14 +33,25 @@ import { CrudactionsComponent } from './crudactions/crudactions.component';
     OrdersComponent,
     ReturnsComponent,
     UserComponent,
-    CrudactionsComponent
+    CrudactionsComponent,
+    FindCutomersComponent,
+    MainComponent,
+    FindInquiryComponent,
+    FindOrdersComponent,
+    FindReturnsComponent,
+    CustomerModComponent
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    CrudActionsManageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
