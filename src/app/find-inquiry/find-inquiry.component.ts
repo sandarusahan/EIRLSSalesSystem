@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import { SalesOrder } from './../Models/SalesOrder';
+import { SalesOrdersService } from './../Services/sales-orders.service';
 import { Component, OnInit } from '@angular/core';
 import { CrudActionsManageService } from '../Services/crud-actions-manage.service';
 
@@ -8,10 +11,19 @@ import { CrudActionsManageService } from '../Services/crud-actions-manage.servic
 })
 export class FindInquiryComponent implements OnInit {
 
-  constructor(private crudManager:CrudActionsManageService) { }
+  inquiries:SalesOrder[] = []
+  constructor(private crudManager:CrudActionsManageService, private ordersService:SalesOrdersService, private router:Router) { }
 
   ngOnInit() {
     this.crudManager.show();
+
+    this.ordersService.getInquiries().subscribe(res => {
+      this.inquiries = res;
+    })
+  }
+
+  onNewClick() {
+    this.router.navigate(['inquiry','new']);
   }
 
 }

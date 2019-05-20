@@ -1,7 +1,7 @@
 export class Courier {
-    private courierId:string;
-    private company:string;
-    private telephone:string;
-    private vehicleType:string;
-    private vehicleId:string;
+    courierId:string;
+    company:string;
+    telephone:string;
+    vehicleType:string;
+    vehicleId:string;
 }

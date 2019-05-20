@@ -1,3 +1,5 @@
+import { SalesOrdersService } from './../Services/sales-orders.service';
+import { SalesOrder } from './../Models/SalesOrder';
 import { CrudActionsManageService } from './../Services/crud-actions-manage.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,10 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FindReturnsComponent implements OnInit {
 
-  constructor(private crudManager:CrudActionsManageService) { }
+  returns : SalesOrder[] = []
+  constructor(private crudManager:CrudActionsManageService, private orderService : SalesOrdersService) { }
 
   ngOnInit() {
     this.crudManager.show()
+
+    this.orderService.getReturns().subscribe(res => this.returns = res)
   }
 
 }

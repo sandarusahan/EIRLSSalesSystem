@@ -1,100 +1,220 @@
+<!-- <button class="btn btn-primary mb-3" routerLink="../"><i class="fas fa-chevron-circle-left"></i> Inquiries</button> -->
 
-<button class="btn btn-primary mb-3" routerLink="../"><i class="fas fa-chevron-circle-left"></i> Inquiry</button>
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
 
-<form>
-  
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label for="status">Inquiry ID</label>
-            <input type="text" class="form-control" id="status">
+  <div class="btn-group" role="group">
+    <button class="btn btn-primary" routerLink="../"><i class="fas fa-chevron-circle-left"></i> Inquiries</button>
+
+  </div>
+
+  <div class="btn-group ml-3" role="group" >
+    <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button>
+    <button type="button" class="btn btn-secondary" (click)="onEditClick()">Edit</button>
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">Delete</button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm Delete !</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <div class="form-group">
-            <label for="pickitem">Item ID</label>
-            <div class="row">
-              
-            <div class="col-7">
-                <select class="form-control" id="pickitem">
-                    <option>Select Item</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
+          <div class="modal-body">
+            Are you sure you want to delete customer {{customer.customerName}} ?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-primary" (click)="onDeleteClick(customer.customerId)"
+              data-dismiss="modal">Yes! Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group ml-2" role="group">
+    <button class="btn btn-success" *ngIf="isNew" form="inqForm" >Create inquiry</button>
+    <button class="btn btn-success">Place as an order</button>
+  </div>
+
+</div>
+
+<form #form="ngForm" (ngSubmit)="onSubmit(form.value)" id="inqForm">
+
+  <div class="container">
+    <div class="form-group-sm">
+      <label for="inqId">Inquiry ID</label>
+      <input [(ngModel)]="inquiry.salesOrderId" name="salesOrderId" type="text" class="form-control form-control-sm"
+        id="inqId" placeholder="Customer ID generates automatically" readonly>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group-sm">
+          <label for="duedate">Due date</label>
+          <input [(ngModel)]="inquiry.dueDate" name="dueDate" type="date" class="form-control form-control-sm"
+            id="duedate" [readonly]="crudActionService.readonlybool" required>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group-sm">
+          <label for="orderdate">Order Date</label>
+          <input [(ngModel)]="inquiry.orderDate" name="orderDate" type="date" class="form-control form-control-sm"
+            id="orderdate" [readonly]="crudActionService.readonlybool" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="container shadow p-3 mb-5 mt-3 bg-white rounded">
+          <span>Customer Details</span>
+          <div class="row">
+            <div class="form-group-sm col-5">
+              <label for="cusid">Customer's Email <i *ngIf="errBool" class="far fa-times-circle text-danger"></i></label>
+              <input [(ngModel)]="customer.customerEmail" (blur)="findCustomer(customer.customerEmail)" name="customerEmail" type="email"
+                class="form-control form-control-sm" id="cusid" [readonly]="crudActionService.readonlybool" required> 
+            </div>
+            <div class="form-group-sm col-7">
+              <label for="cusname">Customer's Name</label>
+              <input [(ngModel)]="customer.customerName" name="customerName" type="text"
+                class="form-control form-control-sm" id="cusname" readonly required>
+            </div>
+          </div>
+          <div class="form-group-sm">
+            <label for="cusaddress">Customer's Main Address</label>
+            <input [(ngModel)]="customer.customerMainLocation" name="customerMainLocation" type="text"
+              class="form-control form-control-sm" id="cusaddress" readonly required>
+          </div>
+          <div class="row">
+            <div class="col-8">
+              <div class="form-group-sm">
+                <label for="type">Customer's Type</label>
+                <input [(ngModel)]="customer.customerType" name="customerType" type="text"
+                  class="form-control form-control-sm" id="type" readonly required>
+              </div>
             </div>
             <div class="col-4">
-              <input type="text" class="form-control" id="qty" placeholder="Quantity">
-            </div> 
-            <div class="col">
-              <a href="#">X</a>
+              <div class="form-group-sm">
+                <label for="credbal">Payment Status</label>
+                <input [(ngModel)]="customer.customerPaymentFlag" name="customerPaymentFlag" type="text"
+                  class="form-control form-control-sm" id="credbal" readonly
+                  required>
+              </div>
             </div>
-          </div>           
-              <a href="#">Add another item</a>
           </div>
-          <div class="form-group">
-            <label for="deldate">Delivery date</label>
-            <input type="date" class="form-control" id="deldate">
-          </div>
-          <div class="form-group">
-            <label for="orderdate">Order Date</label>
-            <input type="date" class="form-control" id="orderdate">
-          </div>
-          
         </div>
-        <div class="col">
-            <span>Customer Details</span>
-            <div class="container shadow p-3 mb-5 bg-white rounded">
-              <div class="row">
-              <div class="form-group col-5">
-                <label for="cusid">Customer ID</label>
-                <input type="text" class="form-control" id="cusid">
-              </div>
-              <div class="form-group col-7">
-                <label for="cusname">Customer Name</label>
-                <input type="text" class="form-control" id="cusname">
-              </div>
-            </div>
-              <div class="form-group">
-                <label for="cusaddress">Customer Address</label>
-                <input type="text" class="form-control" id="cusaddress">
-              </div>
-                <div class="row">
-                  <div class="col-8">
-                <div class="form-group">
-                  <label for="rep">Customer's Sales Rep</label>
-                  <input type="text" class="form-control" id="rep">
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="credbal">Credit Balance</label>
-                  <input type="text" class="form-control" id="credbal">
-                </div>
-              </div>
-              </div>
-            </div>
+      </div>
 
-            <span>Courier Details</span>
-            <div class="container shadow p-3 mb-5 bg-white rounded">
-              <div class="row">
-                <div class="form-group col-6">
-                  <label for="courierid">Courier ID</label>
-                  <input type="text" class="form-control" id="courierid">
-                </div>
-                <div class="form-group col-6">
-                  <label for="couriertype">Courier Type</label>
-                  <input type="text" class="form-control" id="couriertype">
-                </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="deliverType">Delivery Type</label>
+          <select  class="form-control" id="shipmentType" [disabled]="crudActionService.readonlybool"
+           [(ngModel)]="inquiry.shipmentType" name="shipmentType" required>
+            <option>POST</option>
+            <option>COURIER</option>
+
+          </select>
+        </div>
+        <div *ngIf="shipmentType == courier && courierObj != null"
+          class="container shadow p-3 mb-5 mt-3 bg-white rounded">
+          <span>Courier Details</span>
+          <div class="row">
+            <div class="form-group col-6">
+              <label for="company">Courier Name</label>
+              <input [(ngModel)]="courierObj.company" name="company" type="text" class="form-control form-control-sm"
+                id="company">
             </div>
+            <div class="form-group col-6">
+              <label for="couriertype">Vehicle Type</label>
+              <input [(ngModel)]="courierObj.vehicleType" name="vehicleType" type="text"
+                class="form-control form-control-sm" id="couriertype">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
               <div class="form-group">
-                <label for="couriername">Courier Name</label>
-                <input type="text" class="form-control" id="couriername">
+                <label for="telephone">Contact</label>
+                <input [(ngModel)]="courierObj.telephone" name="telephone" type="text"
+                  class="form-control form-control-sm" id="telephone">
               </div>
             </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="vehicleId">Vehicle Number</label>
+                <input [(ngModel)]="courierObj.vehicleId" name="vehicleId" type="text"
+                  class="form-control form-control-sm" id="vehicleId">
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
     
-    
-  </form>
+  </div>
+  <span *ngIf="errBool&&errMsg != ''" class="text-danger"><i class="fas fa-exclamation-circle text-danger"></i>{{errMsg}}</span>
+
+  <div *ngIf="!isNew" class="pr-3 pl-3">
+    <div class="row">
+      <div class="col">
+
+        <table class="table table-sm table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity Required</th>
+              <th scope="col">Add to Inquiry</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of selection; let i = index">
+
+              <td scope="row">{{i+1}}</td>
+              <td>{{item.product.productName}}</td>
+              <td>{{item.product.productPrice}}</td>
+              <td><input type="number" [(ngModel)]="item.qtyReq" name="qtyReq" placeholder="Enter amount" min="1">
+              </td>
+              <td><button type="button" [disabled]="0>=item.qtyReq" class="btn btn-secondary btn-sm"
+                  (click)="addItemToInquiry(item)" >Add <i *ngIf="!item.added" class="fas fa-caret-right"></i><i *ngIf="item.added" class="fas fa-check-circle"></i></button></td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Availability</th>
+              <th scope="col"></th>
+              <!-- <button (click)="clearAll()" class="btn btn-danger">Clear All</button> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of orderItems; let i = index">
+              <th scope="row">{{i+1}}</th>
+              <td>{{item.productName}}</td>
+              <td>{{item.qty}}</td>
+              <td><i *ngIf="getQty(item.productId)>item.qty" class="fas fa-check text-success ml-4"></i><i
+                  *ngIf="item.qty>getQty(item.productId)" class="fas fa-times text-danger ml-4"></i></td>
+              <td><i (click)="clearItem(item)" class="fas fa-trash text-danger ml-4"></i></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+
+</form>

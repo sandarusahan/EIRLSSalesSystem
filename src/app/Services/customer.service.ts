@@ -18,6 +18,10 @@ export class CustomerService {
     return this.http.get<Customer>(this.url+cutomerId)
   }
 
+  getCustomerByEmail(email:string) {
+    return this.http.get<Customer>(this.url+"email/"+email)
+  }
+
   addCustomer(customer : Customer){
     return this.http.post<Customer>(this.url+"new", customer);
   }

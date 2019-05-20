@@ -27,7 +27,6 @@ export class FindCutomersComponent implements OnInit {
   }
 
   onRowClick(customer:Customer){
-
     console.log(customer)
     this.router.navigate(['customers', customer.customerId]);
   }

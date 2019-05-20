@@ -20,7 +20,6 @@ import { MainComponent } from './main/main.component';
 import { FindInquiryComponent } from './find-inquiry/find-inquiry.component';
 import { FindOrdersComponent } from './find-orders/find-orders.component';
 import { FindReturnsComponent } from './find-returns/find-returns.component';
-import { CustomerModComponent } from './customer-mod/customer-mod.component';
 
 
 @NgModule({
@@ -38,8 +37,7 @@ import { CustomerModComponent } from './customer-mod/customer-mod.component';
     MainComponent,
     FindInquiryComponent,
     FindOrdersComponent,
-    FindReturnsComponent,
-    CustomerModComponent
+    FindReturnsComponent
     
   ],
   imports: [
