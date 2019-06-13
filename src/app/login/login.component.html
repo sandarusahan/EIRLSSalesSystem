@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col">
+
+  </div>
+  <div class="col">
+  <form class="form-signin" #form="ngForm" (ngSubmit)="authenticateUser(form.value)">
+  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+  <label for="inputEmail" class="sr-only">Email address</label>
+  <input type="text" id="inputUsername" [(ngModel)]="user.username" name="username"  class="form-control mb-3" placeholder="Username" required autofocus>
+  
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" id="inputPassword" [(ngModel)]="user.password" name="password" class="form-control" placeholder="Password" required>
+  
+  <br>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  <span class="text-danger">{{msg}}</span>
+</form>
+  </div>
+  <div class="col">
+
+  </div>
+</div>
+

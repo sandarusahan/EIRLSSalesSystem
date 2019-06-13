@@ -2,12 +2,12 @@
 
 <div class="btn-toolbar mt-3" role="toolbar" aria-label="Toolbar with button groups">
         
-  <div class="btn-group" role="group" aria-label="First group">
-      <button  type="button" class="btn btn-secondary btn-sm" (click)="crudManager.select= !crudManager.select"><i *ngIf="!crudManager.select" class="far fa-check-square"></i><i *ngIf="crudManager.select" class="fas fa-check-square"></i></button>
-  </div>
+  <!-- <div class="btn-group" role="group" aria-label="First group">
+      <button  type="button" class="btn btn-secondary btn-sm" (click)="crudManager.select= !crudManager.select"><i class="far fa-check-square"></i><i *ngIf="crudManager.select" class="fas fa-check-square"></i></button>
+  </div> -->
 
   <div class="btn-group ml-2" role="group" aria-label="First group">
-    <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="crudManager.select">New</button>
+    <button type="button" class="btn btn-secondary" (click)="onNewClick()">New Customer</button>
     <!-- <button type="button" class="btn btn-secondary" (click)="onDeleteClick()">Delete</button> -->
   </div>
   
@@ -17,7 +17,7 @@
 <table class="table table-sm table-hover mt-3">
     <thead>
       <tr>
-        <th scope="col"></th>
+        <!-- <th scope="col"></th> -->
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Email</th>
@@ -29,7 +29,7 @@
     <tbody>
       <tr *ngFor="let customer of customers; let i = index" [routerLink]="[customer.customerId]">
           
-        <td scope="row"><input type="checkbox" name="selected" (change)="selected($event)" *ngIf="crudManager.select"></td>
+        <!-- <td scope="row"><input type="checkbox" name="selected" (change)="selected($event)" *ngIf="crudManager.select"></td> -->
         <td scope="row">{{i+1}}</td>
         <td>{{customer.customerName}}</td>
         <td>{{customer.customerEmail}}</td>

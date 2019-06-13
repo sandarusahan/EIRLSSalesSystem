@@ -1,3 +1,6 @@
+
+<router-outlet></router-outlet>
+
 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
         
   <div class="btn-group ml-2" role="group" aria-label="First group">
@@ -7,31 +10,34 @@
   
 </div>
 
-<router-outlet></router-outlet>
 
 <table class="table table-sm table-hover mt-5">
     <thead>
       <tr>
-        <th scope="col">
+        <!-- <th scope="col">
             <button  type="button" class="btn btn-secondary btn-sm" (click)="crudManager.select= !crudManager.select"><i class="fas fa-check-square"></i></button>
-        </th>
+        </th> -->
         <th scope="col">#</th>
-        <th scope="col">Rerurned order ID</th>
-        <th scope="col">Date</th>
-        <th scope="col">Status</th>
-        <th scope="col">Customer's name</th>
+        <th scope="col">Courier Id</th>
+        <th scope="col">Company Name</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Vehicle Type</th>
+        <th scope="col">Vehicle Number</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let return of returns; let i = index" [routerLink]="[return.salesOrderId]">
+      <tr *ngFor="let courier of couriers; let i = index" [routerLink]="[courier.courierId]">
           
-        <td scope="row"><input type="checkbox" name="selected" (change)="selected($event)" *ngIf="crudManager.select"></td>
+        <!-- <td scope="row"><input type="checkbox" name="selected" (change)="selected($event)" *ngIf="crudManager.select"></td> -->
         <td scope="row">{{i+1}}</td>
-        <td>{{return.salesOrderId}}</td>
-        <td>{{return.timestamp | date:'medium'}}</td>
-        <td>{{return.orderStatus}}</td>
-        <td><a [routerLink]="[customers, 'return.customer.customerId']">{{return.customer.customerName}}</a></td>
-                
+        <td>{{courier.courierId}}</td>
+        <td>{{courier.company}}</td>
+        <td>{{courier.telephone}}</td>
+        <td>{{courier.vehicleType}}</td>
+        <td>{{courier.vehicleId}}</td>
+        
       </tr>
     </tbody>
   </table>
+
+  

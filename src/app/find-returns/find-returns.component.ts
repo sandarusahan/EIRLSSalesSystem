@@ -1,7 +1,9 @@
+import { AuthenticateService } from './../Services/authenticate.service';
 import { SalesOrdersService } from './../Services/sales-orders.service';
 import { SalesOrder } from './../Models/SalesOrder';
 import { CrudActionsManageService } from './../Services/crud-actions-manage.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-find-returns',
@@ -11,12 +13,21 @@ import { Component, OnInit } from '@angular/core';
 export class FindReturnsComponent implements OnInit {
 
   returns : SalesOrder[] = []
-  constructor(private crudManager:CrudActionsManageService, private orderService : SalesOrdersService) { }
+  constructor(private crudManager:CrudActionsManageService, private orderService : SalesOrdersService, private auth:AuthenticateService, private router: Router) { }
 
   ngOnInit() {
-    this.crudManager.show()
+    if(this.auth.authenticated){
+      this.crudManager.show()
 
-    this.orderService.getReturns().subscribe(res => this.returns = res)
+    // this.orderService.getReturns().subscribe(res => this.returns = res)
+    }else{
+      this.router.navigate(['login'])
+
+    }
+    
   }
 
+  onNewClick() {
+    this.router.navigate(['returns','new']);
+  }
 }

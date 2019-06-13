@@ -1,3 +1,4 @@
+import { AuthenticateService } from './../Services/authenticate.service';
 import { Router } from '@angular/router';
 import { SalesOrder } from './../Models/SalesOrder';
 import { SalesOrdersService } from './../Services/sales-orders.service';
@@ -12,15 +13,36 @@ import { CrudActionsManageService } from '../Services/crud-actions-manage.servic
 export class FindInquiryComponent implements OnInit {
 
   inquiries:SalesOrder[] = []
-  constructor(private crudManager:CrudActionsManageService, private ordersService:SalesOrdersService, private router:Router) { }
+  constructor(private crudManager:CrudActionsManageService, private ordersService:SalesOrdersService, private router:Router, private auth:AuthenticateService) { }
 
   ngOnInit() {
-    this.crudManager.show();
 
+    if(this.auth.authenticated){
+      this.crudManager.show();
+
+      this.ordersService.getInquiries().subscribe(res => {
+        console.log(res)
+        this.inquiries = res;
+      })
+    }else{
+      this.router.navigate(['login'])
+    }
+    
+  }
+
+  ngOnChanges(){
     this.ordersService.getInquiries().subscribe(res => {
+      console.log("on changes")
       this.inquiries = res;
     })
   }
+
+  // ngDoCheck(){
+  //   this.ordersService.getInquiries().subscribe(res => {
+  //     console.log("do check")
+  //     this.inquiries = res;
+  //   })
+  // }
 
   onNewClick() {
     this.router.navigate(['inquiry','new']);

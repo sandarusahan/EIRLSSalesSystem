@@ -1,3 +1,6 @@
+import { LoginComponent } from './login/login.component';
+import { CourierComponent } from './courier/courier.component';
+import { FindCourierComponent } from './find-courier/find-courier.component';
 import { FindReturnsComponent } from './find-returns/find-returns.component';
 import { FindOrdersComponent } from './find-orders/find-orders.component';
 import { FindInquiryComponent } from './find-inquiry/find-inquiry.component';
@@ -13,32 +16,18 @@ import { ReturnsComponent } from './returns/returns.component';
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
-  {path:'customers', component: FindCutomersComponent, children: [
-    {
-      path: ':id',
-      component: CustomersComponent
-    }
-  ]},
-  {path:'inquiry', component: FindInquiryComponent, children:[
-    {
-      path:':id', 
-      component: InquiryComponent
-    }
-  ]},
-  {path:'orders', component: FindOrdersComponent, children: [
-    {
-      path:':id', 
-      component: OrdersComponent
-    },
-
-  ]},
-  {path:'returns', component: FindReturnsComponent, children:[
-    {
-      path:':id', 
-      component: ReturnsComponent
-    }
-  ]},
-  {path:'users', component: UserComponent}
+  {path:'login', component: LoginComponent},
+  {path:'customers', component: FindCutomersComponent},
+  {path: 'customers/:id', component: CustomersComponent},
+  {path:'inquiry', component: FindInquiryComponent},
+  {path:'inquiry/:id', component: InquiryComponent},
+  {path:'orders', component: FindOrdersComponent},
+  {path:'orders/:id', component: OrdersComponent},
+  {path:'returns', component: FindReturnsComponent},
+  {path:'returns/:id', component: ReturnsComponent},
+  {path:'courier', component: FindCourierComponent},
+  {path:'courier/:id', component: CourierComponent}
+  
 ];
 
 @NgModule({

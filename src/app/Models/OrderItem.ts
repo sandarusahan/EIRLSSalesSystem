@@ -1,6 +1,6 @@
 import { SalesOrder } from './SalesOrder';
 export class OrderItem {
-    orderItemId:string
+    orderItemId:number
     salesOrder:SalesOrder
     productId:string
     productName:string
@@ -8,5 +8,5 @@ export class OrderItem {
     qty:number
     reference:string
     cancelled:boolean
-    
+    available:boolean
 }

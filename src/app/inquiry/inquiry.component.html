@@ -7,10 +7,11 @@
 
   </div>
 
-  <div class="btn-group ml-3" role="group" >
+  <div class="btn-group ml-3" role="group">
     <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button>
-    <button type="button" class="btn btn-secondary" (click)="onEditClick()">Edit</button>
-    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">Delete</button>
+    <button type="button" class="btn btn-secondary" (click)="onEditClick()" [disabled]="isNew">Edit</button>
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+      [disabled]="isNew">Delete</button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
@@ -36,19 +37,20 @@
   </div>
 
   <div class="btn-group ml-2" role="group">
-    <button class="btn btn-success" *ngIf="isNew" form="inqForm" >Create inquiry</button>
-    <button class="btn btn-success">Place as an order</button>
+    <button class="btn btn-success" *ngIf="isNew" form="inqForm" (click)="validateForm(form.value)">Create
+      inquiry</button>
+    <button class="btn btn-success" [disabled]="isNew" (click)="placeOrder()">Place as an order</button>
   </div>
 
 </div>
 
-<form #form="ngForm" (ngSubmit)="onSubmit(form.value)" id="inqForm">
+<form #form="ngForm" id="inqForm">
 
   <div class="container">
     <div class="form-group-sm">
       <label for="inqId">Inquiry ID</label>
       <input [(ngModel)]="inquiry.salesOrderId" name="salesOrderId" type="text" class="form-control form-control-sm"
-        id="inqId" placeholder="Customer ID generates automatically" readonly>
+        id="inqId" placeholder="Inquiry ID generates automatically" readonly>
     </div>
 
     <div class="row">
@@ -74,9 +76,11 @@
           <span>Customer Details</span>
           <div class="row">
             <div class="form-group-sm col-5">
-              <label for="cusid">Customer's Email <i *ngIf="errBool" class="far fa-times-circle text-danger"></i></label>
-              <input [(ngModel)]="customer.customerEmail" (blur)="findCustomer(customer.customerEmail)" name="customerEmail" type="email"
-                class="form-control form-control-sm" id="cusid" [readonly]="crudActionService.readonlybool" required> 
+              <label for="cusid">Customer's Email <i *ngIf="errBool"
+                  class="far fa-times-circle text-danger"></i></label>
+              <input [(ngModel)]="customer.customerEmail" (blur)="findCustomer(customer.customerEmail)"
+                name="customerEmail" type="email" class="form-control form-control-sm" id="cusid"
+                [readonly]="crudActionService.readonlybool" required>
             </div>
             <div class="form-group-sm col-7">
               <label for="cusname">Customer's Name</label>
@@ -101,8 +105,7 @@
               <div class="form-group-sm">
                 <label for="credbal">Payment Status</label>
                 <input [(ngModel)]="customer.customerPaymentFlag" name="customerPaymentFlag" type="text"
-                  class="form-control form-control-sm" id="credbal" readonly
-                  required>
+                  class="form-control form-control-sm" id="credbal" readonly required>
               </div>
             </div>
           </div>
@@ -112,26 +115,50 @@
       <div class="col">
         <div class="form-group">
           <label for="deliverType">Delivery Type</label>
-          <select  class="form-control" id="shipmentType" [disabled]="crudActionService.readonlybool"
-           [(ngModel)]="inquiry.shipmentType" name="shipmentType" required>
+          <select class="form-control" id="shipmentType" [disabled]="crudActionService.readonlybool"
+            [(ngModel)]="inquiry.shipmentType" name="shipmentType" required>
             <option>POST</option>
             <option>COURIER</option>
 
           </select>
         </div>
-        <div *ngIf="shipmentType == courier && courierObj != null"
-          class="container shadow p-3 mb-5 mt-3 bg-white rounded">
-          <span>Courier Details</span>
+        <div *ngIf="inquiry.shipmentType == 'COURIER'" class="container shadow p-3 mb-5 mt-3 bg-white rounded">
+          <span>Courier Details</span><button type="button" class="btn btn-link" data-toggle="modal"
+            data-target="#exampleModalScrollable">Find Couriers</button>
+          <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="list-group">
+                    <button type="button" class="list-group-item list-group-item-action"
+                      *ngFor="let courier of couriers" (click)="selectCourier(courier)"
+                      data-dismiss="modal">{{courier.company}} - {{courier.vehicleType}}</button>
+                  </div>
+                </div>
+                <!-- <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+                </div> -->
+              </div>
+            </div>
+          </div>
           <div class="row">
             <div class="form-group col-6">
               <label for="company">Courier Name</label>
               <input [(ngModel)]="courierObj.company" name="company" type="text" class="form-control form-control-sm"
-                id="company">
+                id="company" readonly>
             </div>
             <div class="form-group col-6">
               <label for="couriertype">Vehicle Type</label>
               <input [(ngModel)]="courierObj.vehicleType" name="vehicleType" type="text"
-                class="form-control form-control-sm" id="couriertype">
+                class="form-control form-control-sm" id="couriertype" readonly>
             </div>
           </div>
           <div class="row">
@@ -139,14 +166,14 @@
               <div class="form-group">
                 <label for="telephone">Contact</label>
                 <input [(ngModel)]="courierObj.telephone" name="telephone" type="text"
-                  class="form-control form-control-sm" id="telephone">
+                  class="form-control form-control-sm" id="telephone" readonly>
               </div>
             </div>
             <div class="col">
               <div class="form-group">
                 <label for="vehicleId">Vehicle Number</label>
                 <input [(ngModel)]="courierObj.vehicleId" name="vehicleId" type="text"
-                  class="form-control form-control-sm" id="vehicleId">
+                  class="form-control form-control-sm" id="vehicleId" readonly>
               </div>
             </div>
           </div>
@@ -154,13 +181,14 @@
         </div>
       </div>
     </div>
-    
-  </div>
-  <span *ngIf="errBool&&errMsg != ''" class="text-danger"><i class="fas fa-exclamation-circle text-danger"></i>{{errMsg}}</span>
 
-  <div *ngIf="!isNew" class="pr-3 pl-3">
+  </div>
+  <span *ngIf="errBool&&errMsg != ''" class="text-danger"><i
+      class="fas fa-exclamation-circle text-danger"></i>{{errMsg}}</span>
+
+  <div class="pr-3 pl-3">
     <div class="row">
-      <div class="col">
+      <div *ngIf="isNew" class="col">
 
         <table class="table table-sm table-hover mt-3">
           <thead>
@@ -181,13 +209,14 @@
               <td><input type="number" [(ngModel)]="item.qtyReq" name="qtyReq" placeholder="Enter amount" min="1">
               </td>
               <td><button type="button" [disabled]="0>=item.qtyReq" class="btn btn-secondary btn-sm"
-                  (click)="addItemToInquiry(item)" >Add <i *ngIf="!item.added" class="fas fa-caret-right"></i><i *ngIf="item.added" class="fas fa-check-circle"></i></button></td>
+                  (click)="addItemToInquiry(item)">Add <i *ngIf="!item.added" class="fas fa-caret-right"></i><i
+                    *ngIf="item.added" class="fas fa-check-circle"></i></button></td>
 
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="col">
+      <div *ngIf="isNew" class="col">
         <table class="table table-hover">
           <thead>
             <tr>
@@ -206,7 +235,7 @@
               <td>{{item.qty}}</td>
               <td><i *ngIf="getQty(item.productId)>item.qty" class="fas fa-check text-success ml-4"></i><i
                   *ngIf="item.qty>getQty(item.productId)" class="fas fa-times text-danger ml-4"></i></td>
-              <td><i (click)="clearItem(item)" class="fas fa-trash text-danger ml-4"></i></td>
+              <td><i (click)="clearItem(i)" class="fas fa-trash text-danger ml-4"></i></td>
             </tr>
 
           </tbody>
@@ -216,5 +245,30 @@
 
   </div>
 
+  <div *ngIf="!isNew" class="container">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Qty</th>
+          <th scope="col">Availability</th>
+          <th scope="col"></th>
+          <!-- <button (click)="clearAll()" class="btn btn-danger">Clear All</button> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of orderItems; let i = index">
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.productName}}</td>
+          <td>{{item.qty}}</td>
+          <td><i *ngIf="getQty(item.productId)>item.qty" class="fas fa-check text-success ml-4"></i><i
+              *ngIf="item.qty>getQty(item.productId)" class="fas fa-times text-danger ml-4"></i></td>
+          <td><i (click)="clearItem(i)" class="fas fa-trash text-danger ml-4"></i></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
 
 </form>

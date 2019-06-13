@@ -1,20 +1,9 @@
-import {
-  CrudActionsManageService
-} from './../Services/crud-actions-manage.service';
-import {
-  Customer
-} from './../Models/Customer';
-import {
-  CustomerService
-} from './../Services/customer.service';
-import {
-  ActivatedRoute,
-  Router
-} from '@angular/router';
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { AuthenticateService } from './../Services/authenticate.service';
+import {  CrudActionsManageService} from './../Services/crud-actions-manage.service';
+import {  Customer} from './../Models/Customer';
+import {  CustomerService} from './../Services/customer.service';
+import {  ActivatedRoute,  Router} from '@angular/router';
+import {  Component,  OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-customers',
@@ -25,27 +14,30 @@ export class CustomersComponent implements OnInit {
 
   isNew: boolean = false;
   customer: Customer = < Customer > new Object();
+  errBool: boolean = false;
+  errMsg: string = "";
   constructor(private route: ActivatedRoute, private customerService: CustomerService, private crudActionService: CrudActionsManageService, private router: Router) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(param => {
-      let id = param.get('id');
-      if (id != "" || id != null) {
-        if (id == "new") {
-          this.onNewClick();
-        } else {
-          this.customerService.getCustomer(id).subscribe(customer => {
-              this.customer = < Customer > customer;
-              this.crudActionService.readonly();
-            },
-            err => {
-              console.log("error!!.."+ err)
-              this.onNewClick();
-            })
+      this.route.paramMap.subscribe(param => {
+        let id = param.get('id');
+        if (id != "" || id != null) {
+          if (id == "new") {
+            this.onNewClick();
+          } else {
+            this.customerService.getCustomer(id).subscribe(customer => {
+                this.customer = < Customer > customer;
+                this.crudActionService.readonly();
+              },
+              err => {
+                console.log("error!!.." + err)
+                this.onNewClick();
+              })
+          }
+  
         }
-
-      }
-    });
+      });
+    
   }
 
   onSubmit(form: Customer) {
@@ -65,7 +57,6 @@ export class CustomersComponent implements OnInit {
     }
     this.isNew = false
     console.log(form)
-    window.location.reload()
   }
 
   onNewClick() {
@@ -87,9 +78,20 @@ export class CustomersComponent implements OnInit {
         this.router.navigate(['customers'])
 
       }
-      window.location.reload();
     });
   }
 
+  checkEmail(){
+    console.log(this.customer.customerEmail)
+    this.customerService.getCustomerByEmail(this.customer.customerEmail).subscribe(res => {
+      if(res != null){
+        this.errBool = true;
+        this.errMsg = "Customer with this email, already available"
+      }else{
+        this.errBool = false;
+        this.errMsg = ""
+      }
+    })
+  }
 
 }

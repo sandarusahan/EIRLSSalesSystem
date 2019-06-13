@@ -1,0 +1,76 @@
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+
+  <div class="btn-group" role="group" aria-label="First group">
+    <button class="btn btn-primary" routerLink="../"><i class="fas fa-chevron-circle-left"></i> Couriers</button>
+
+  </div>
+
+  <div class="btn-group ml-3" role="group" aria-label="First group">
+    <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button>
+    <button type="button" class="btn btn-secondary" (click)="onEditClick()" [disabled]="isNew">Edit</button>
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+      [disabled]="isNew">Delete</button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm Delete !</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete courier {{courierObj.company}} ?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-primary" (click)="onDeleteClick(courierObj.courierId)"
+              data-dismiss="modal">Yes! Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group ml-3" role="group" aria-label="First group">
+    <button type="button" class="btn btn-secondary" form="courier_form" (click)="onSubmit(courierObj)"
+      [hidden]="crudActionService.readonlybool">Add Courier</button>
+  </div>
+
+</div>
+
+<div class="container shadow p-3 mb-5 mt-3 bg-white rounded">
+  <span>Courier Details</span>
+  <form #form="ngForm" id="courier_form">
+    <div class="row">
+      <div class="form-group col-6">
+        <label for="company">Courier Name</label>
+        <input [(ngModel)]="courierObj.company" name="company" type="text" class="form-control form-control-sm"
+          id="company" [readonly]="crudActionService.readonlybool">
+      </div>
+      <div class="form-group col-6">
+        <label for="couriertype">Vehicle Type</label>
+        <input [(ngModel)]="courierObj.vehicleType" name="vehicleType" type="text" class="form-control form-control-sm"
+          id="couriertype" [readonly]="crudActionService.readonlybool">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="telephone">Contact</label>
+          <input [(ngModel)]="courierObj.telephone" name="telephone" type="text" class="form-control form-control-sm"
+            id="telephone" [readonly]="crudActionService.readonlybool">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="vehicleId">Vehicle Number</label>
+          <input [(ngModel)]="courierObj.vehicleId" name="vehicleId" type="text" class="form-control form-control-sm"
+            id="vehicleId" [readonly]="crudActionService.readonlybool">
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

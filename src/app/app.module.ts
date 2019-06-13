@@ -20,6 +20,9 @@ import { MainComponent } from './main/main.component';
 import { FindInquiryComponent } from './find-inquiry/find-inquiry.component';
 import { FindOrdersComponent } from './find-orders/find-orders.component';
 import { FindReturnsComponent } from './find-returns/find-returns.component';
+import { CourierComponent } from './courier/courier.component';
+import { FindCourierComponent } from './find-courier/find-courier.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -37,7 +40,10 @@ import { FindReturnsComponent } from './find-returns/find-returns.component';
     MainComponent,
     FindInquiryComponent,
     FindOrdersComponent,
-    FindReturnsComponent
+    FindReturnsComponent,
+    CourierComponent,
+    FindCourierComponent,
+    LoginComponent
     
   ],
   imports: [

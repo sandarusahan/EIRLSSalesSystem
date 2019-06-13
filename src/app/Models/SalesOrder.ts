@@ -2,10 +2,11 @@ import { Customer } from './Customer';
 import { OrderItem } from './OrderItem';
 import { Courier } from './Courier';
 export class SalesOrder {
-    salesOrderId:string
+    salesOrderId:number
     orderDate:string;
-    orderType:string = 'INQUIRY';
-    orderStatus:string = 'ACTIVE';
+    timestamp:string;
+    orderType:string;
+    orderStatus:string;
     customer:Customer;
     orderItems:OrderItem[];
     dueDate:string;

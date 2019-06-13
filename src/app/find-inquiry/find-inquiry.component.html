@@ -1,44 +1,38 @@
 
-<router-outlet></router-outlet>
-
 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
         
   <div class="btn-group ml-2" role="group" aria-label="First group">
       <button type="button" class="btn btn-secondary" (click)="onNewClick()">New</button>
-      <button type="button" class="btn btn-secondary" (click)="onDeleteClick()">Delete</button>
+      <!-- <button type="button" class="btn btn-secondary" (click)="onDeleteClick()">Delete</button> -->
   </div>
   
 </div>
 
 
-<table class="table table-sm table-hover mt-5">
+<table class="table table-sm table-hover mt-3">
     <thead>
       <tr>
-        <th scope="col">
+        <!-- <th scope="col">
             <button  type="button" class="btn btn-secondary btn-sm" (click)="crudManager.select= !crudManager.select"><i class="fas fa-check-square"></i></button>
-        </th>
+        </th> -->
         <th scope="col">#</th>
-        <th scope="col">Inquiry ID</th>
         <th scope="col">Date</th>
         <th scope="col">Status</th>
         <th scope="col">Customer's name</th>
         <th scope="col">Due Date</th>
         <th scope="col">Shipment Type</th>
-        <th scope="col">Courier</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let inquiry of inquiries; let i = index" [routerLink]="[inquiry.salesOrderId]">
           
-        <td scope="row"><input type="checkbox" name="selected" (change)="selected($event)" *ngIf="crudManager.select"></td>
+        <!-- <td scope="row"><input type="checkbox" name="selected" (change)="selected($event)" *ngIf="crudManager.select"></td> -->
         <td scope="row">{{i+1}}</td>
-        <td>{{inquiry.salesOrderId}}</td>
-        <td>{{inquiry.orderDate}}</td>
+        <td>{{inquiry.timestamp | date:'medium'}}</td>
         <td>{{inquiry.orderStatus}}</td>
-        <td><a [routerLink]="['customers', 'inquiry.customer.customerId']">{{inquiry.customer.customerName}}</a></td>
-        <td>{{inquiry.dueDate}}</td>
+        <td>{{inquiry.customer.customerName}}</td>
+        <td>{{inquiry.dueDate | date}}</td>
         <td>{{inquiry.shipmentType}}</td>
-        <td>{{inquiry.courier}}</td>
         
       </tr>
     </tbody>

@@ -1,43 +1,44 @@
-<div class="container shadow pb-3 pt-2">
-  <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
 
-    <div class="btn-group" role="group" aria-label="First group">
-      <button class="btn btn-primary" routerLink="../"><i class="fas fa-chevron-circle-left"></i> Customers</button>
+  <div class="btn-group" role="group" aria-label="First group">
+    <button class="btn btn-primary" routerLink="../"><i class="fas fa-chevron-circle-left"></i> Customers</button>
 
-    </div>
+  </div>
 
-    <div class="btn-group ml-3" role="group" aria-label="First group">
-      <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button>
-      <button type="button" class="btn btn-secondary" (click)="onEditClick()" [disabled]="isNew">Edit</button>
-      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" [disabled]="isNew">Delete</button>
+  <div class="btn-group ml-3" role="group" aria-label="First group">
+    <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button>
+    <button type="button" class="btn btn-secondary" (click)="onEditClick()" [disabled]="isNew">Edit</button>
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" [disabled]="isNew">Delete</button>
 
-      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete !</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                Are you sure you want to delete customer {{customer.customerName}} ?
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-primary" (click)="onDeleteClick(customer.customerId)" data-dismiss="modal">Yes! Delete</button>
-              </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Confirm Delete !</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete customer {{customer.customerName}} ?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button type="button" class="btn btn-primary" (click)="onDeleteClick(customer.customerId)" data-dismiss="modal">Yes! Delete</button>
             </div>
           </div>
         </div>
-    </div>
-
-    
+      </div>
   </div>
 
+  <div class="btn-group" role="group" aria-label="First group">
+  <button type="submit" class="btn btn-success ml-3" form="cust-form" *ngIf="!crudActionService.readonlybool"
+    [disabled]="!form.valid || errBool">Submit</button>
+  </div>
+</div>
+<div class="container shadow pb-3 pt-2">
   
-
-  <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" class="mb-3">
+  <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" class="mb-3" id="cust-form">
     <div class="row">
       <div class="col-6">
         <div class="form-group-sm">
@@ -69,7 +70,7 @@
         <div class="form-group-sm">
           <label for="email">E-mail</label>
           <input type="email" class="form-control form-control-sm" id="email" placeholder="someone@email.com"
-            [(ngModel)]="customer.customerEmail" name="customerEmail" [readonly]="crudActionService.readonlybool"
+            [(ngModel)]="customer.customerEmail" name="customerEmail" (blur)="checkEmail()" [readonly]="crudActionService.readonlybool"
             required>
         </div>
       </div>
@@ -125,9 +126,6 @@
         </div>
       </div>
     </div>
-
-
-    <button type="submit" class="btn btn-primary mt-3" *ngIf="!crudActionService.readonlybool"
-      [disabled]="!form.valid">Submit</button>
   </form>
+  <span class="text-danger">{{errMsg}}</span>
 </div>
