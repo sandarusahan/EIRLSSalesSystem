@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { SalesOrder } from '../Models/SalesOrder';
 import * as moment from 'moment';
 import { OrderItem } from '../Models/OrderItem';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-returns',
@@ -21,11 +21,33 @@ export class ReturnsComponent implements OnInit {
   customer : Customer = <Customer> new Object();
   courierObj : Courier = <Courier> new Object();
 
+  returnReady:boolean = false;
   orderId
   orderItems: OrderItem[] =[];
-  constructor(private orderService : SalesOrdersService, private router: Router) { }
+  constructor(private orderService : SalesOrdersService, private router: Router, private route:ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.paramMap.subscribe(param => {
+      let id = param.get('id');
+      if(id != null || id != ""){
+        if(id != "new"){
+          console.log(id)
+          this.orderService.getOrder(+id).subscribe(order => {
+            this.order = order;
+            this.order.dueDate = moment(order.dueDate).format("YYYY-MM-DD");
+            this.order.orderDate = moment(order.orderDate).format("YYYY-MM-DD");
+            this.customer = order.customer;
+            this.courierObj = order.courier;
+            this.isNew = false;
+            this.returnReady = true
+          })
+        }else {
+          this.onNewClick();
+          
+        }
+      }
+    })
+
   }
 
   onNewClick() {
@@ -55,6 +77,8 @@ export class ReturnsComponent implements OnInit {
     console.log(this.orderId);
     this.orderService.getOrder(this.orderId).subscribe(order => {
       this.valid = true;
+      this.errBool = false;
+      this.returnReady = true;
       this.order = order;
       this.order.dueDate = moment(order.dueDate).format("YYYY-MM-DD");
       this.order.orderDate = moment(order.orderDate).format("YYYY-MM-DD");
@@ -64,7 +88,36 @@ export class ReturnsComponent implements OnInit {
     }, err => {
       this.valid = false;
       this.errBool = true;
+      this.returnReady = false;
+      this.order = new SalesOrder();
       this.errMsg = "Invalid order id !!"
     })
   }
+
+  returnOrder(returnType){
+    switch (returnType) {
+      case 'exchange': 
+        this.orderService.switchOrderType('return_exchange', this.order).subscribe(order => {
+          this.order = order;
+          this.order.dueDate = moment(order.dueDate).format("YYYY-MM-DD");
+          this.order.orderDate = moment(order.orderDate).format("YYYY-MM-DD");
+        })
+      break;
+      case 'credit':
+        this.orderService.switchOrderType('return_credit', this.order).subscribe(order => {
+          this.order = order;
+          this.order.dueDate = moment(order.dueDate).format("YYYY-MM-DD");
+          this.order.orderDate = moment(order.orderDate).format("YYYY-MM-DD");
+        })
+      break;
+      case 'repair':
+        this.orderService.switchOrderType('return_repair', this.order).subscribe(order => {
+          this.order = order;
+          this.order.dueDate = moment(order.dueDate).format("YYYY-MM-DD");
+          this.order.orderDate = moment(order.orderDate).format("YYYY-MM-DD");
+        })   
+      break;
+    }
+  }
+
 }

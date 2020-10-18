@@ -67,7 +67,7 @@ export class OrdersComponent implements OnInit {
   }
 
   onEditClick() {
-    this.isNew = false;
+    this.isNew = true;
     this.crudActionService.editable();
   }
 
@@ -82,6 +82,18 @@ export class OrdersComponent implements OnInit {
 
       }
     });
+  }
+
+  cancelOrder(){
+    this.order
+    let newOrder = new SalesOrder();
+    newOrder = this.order;
+    newOrder.orderStatus = "Cancelled"
+
+    this.orderService.addOrder(newOrder).subscribe(inq => {
+      this.order = inq;
+      this.isNew = false;
+    })
   }
 
 }

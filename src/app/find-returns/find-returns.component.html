@@ -2,36 +2,97 @@
         
   <div class="btn-group ml-2" role="group" aria-label="First group">
       <button type="button" class="btn btn-secondary" (click)="onNewClick()">New</button>
-      <button type="button" class="btn btn-secondary" (click)="onDeleteClick()">Delete</button>
   </div>
   
 </div>
 
-<router-outlet></router-outlet>
 
-<table class="table table-sm table-hover mt-5">
-    <thead>
-      <tr>
-        <th scope="col">
-            <button  type="button" class="btn btn-secondary btn-sm" (click)="crudManager.select= !crudManager.select"><i class="fas fa-check-square"></i></button>
-        </th>
-        <th scope="col">#</th>
-        <th scope="col">Rerurned order ID</th>
-        <th scope="col">Date</th>
-        <th scope="col">Status</th>
-        <th scope="col">Customer's name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let return of returns; let i = index" [routerLink]="[return.salesOrderId]">
-          
-        <td scope="row"><input type="checkbox" name="selected" (change)="selected($event)" *ngIf="crudManager.select"></td>
-        <td scope="row">{{i+1}}</td>
-        <td>{{return.salesOrderId}}</td>
-        <td>{{return.timestamp | date:'medium'}}</td>
-        <td>{{return.orderStatus}}</td>
-        <td><a [routerLink]="[customers, 'return.customer.customerId']">{{return.customer.customerName}}</a></td>
-                
-      </tr>
-    </tbody>
-  </table>
+<div class="container">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Exchange</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Repair</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Credit</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+    <table class="table table-sm table-hover mt-5">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Rerurned order ID</th>
+          <th scope="col">Date</th>
+          <th scope="col">Type</th>
+          <th scope="col">Customer's name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let return of returnsEx; let i = index" [routerLink]="[return.salesOrderId]">
+          <td scope="row">{{i+1}}</td>
+          <td>{{return.salesOrderId}}</td>
+          <td>{{return.timestamp | date:'medium'}}</td>
+          <td>{{return.orderStatus}}</td>
+          <td><a [routerLink]="[customers, 'return.customer.customerId']">{{return.customer.customerName}}</a></td>
+                  
+        </tr>
+      </tbody>
+    </table>
+  
+  </div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+    <table class="table table-sm table-hover mt-5">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Rerurned order ID</th>
+          <th scope="col">Date</th>
+          <th scope="col">Type</th>
+          <th scope="col">Customer's name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let return of returnsRep; let i = index" [routerLink]="[return.salesOrderId]">
+          <td scope="row">{{i+1}}</td>
+          <td>{{return.salesOrderId}}</td>
+          <td>{{return.timestamp | date:'medium'}}</td>
+          <td>{{return.orderStatus}}</td>
+          <td><a [routerLink]="[customers, 'return.customer.customerId']">{{return.customer.customerName}}</a></td>
+                  
+        </tr>
+      </tbody>
+    </table>
+  
+  </div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+    <table class="table table-sm table-hover mt-5">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Rerurned order ID</th>
+          <th scope="col">Date</th>
+          <th scope="col">Type</th>
+          <th scope="col">Customer's name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let return of returnsCred; let i = index" [routerLink]="[return.salesOrderId]">
+          <td scope="row">{{i+1}}</td>
+          <td>{{return.salesOrderId}}</td>
+          <td>{{return.timestamp | date:'medium'}}</td>
+          <td>{{return.orderStatus}}</td>
+          <td><a [routerLink]="[customers, 'return.customer.customerId']">{{return.customer.customerName}}</a></td>
+                  
+        </tr>
+      </tbody>
+    </table>
+  
+  </div>
+</div>
+</div>
+
+

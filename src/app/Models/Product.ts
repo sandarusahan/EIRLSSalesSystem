@@ -1,7 +1,7 @@
 export class Product {
-    productId:string
-    productName:string
-    productPrice:number
-    qty:number
+    id:string
+    name:string
+    price:number
+    quantity:number
     reference:string
 }

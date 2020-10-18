@@ -13,10 +13,12 @@ import { HomeComponent } from './home/home.component';
 import { InquiryComponent } from './inquiry/inquiry.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ReturnsComponent } from './returns/returns.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
-  {path:'', component: HomeComponent},
   {path:'login', component: LoginComponent},
+  {path:'home', component: DashboardComponent},
   {path:'customers', component: FindCutomersComponent},
   {path: 'customers/:id', component: CustomersComponent},
   {path:'inquiry', component: FindInquiryComponent},
@@ -26,7 +28,8 @@ const routes: Routes = [
   {path:'returns', component: FindReturnsComponent},
   {path:'returns/:id', component: ReturnsComponent},
   {path:'courier', component: FindCourierComponent},
-  {path:'courier/:id', component: CourierComponent}
+  {path:'courier/:id', component: CourierComponent},
+  {path:'**', component: NotFoundComponent}
   
 ];
 

@@ -29,6 +29,10 @@
       </div>
     </div>
     </div>
+
+    <div class="btn-group ml-2" role="group">
+      <button class="btn btn-success" [disabled]="order.orderStatus == 'Cancelled'" (click)="cancelOrder()">Cancel order</button>
+    </div>
   </div>
 <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" id="orderForm">
   <div class="container">
@@ -144,5 +148,83 @@
     </div>
   </div>
 
+  <div class="pr-3 pl-3">
+    <div class="row">
+      <!-- <div *ngIf="isNew" class="col">
+
+        <table class="table table-sm table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity Required</th>
+              <th scope="col">Add to Inquiry</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of selection; let i = index">
+
+              <td scope="row">{{i+1}}</td>
+              <td>{{item.product.name}}</td>
+              <td>{{item.product.price}}</td>
+              <td><input type="number" [(ngModel)]="item.qtyReq" name="qtyReq" placeholder="Enter amount" min="1">
+              </td>
+              <td><button type="button" [disabled]="0>=item.qtyReq" class="btn btn-secondary btn-sm"
+                  (click)="addItemToInquiry(item)">Add <i *ngIf="!item.added" class="fas fa-caret-right"></i><i
+                    *ngIf="item.added" class="fas fa-check-circle"></i></button></td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div> -->
+      <div *ngIf="isNew" class="col">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Qty</th>
+              <th scope="col"></th>
+              <!-- <button (click)="clearAll()" class="btn btn-danger">Clear All</button> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of orderItems; let i = index">
+              <th scope="row">{{i+1}}</th>
+              <td>{{item.productName}}</td>
+              <td>{{item.qty}}</td>
+              <td><i (click)="clearItem(i)" class="fas fa-trash text-danger ml-4"></i></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="!isNew" class="container">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Qty</th>
+          
+          <!-- <button (click)="clearAll()" class="btn btn-danger">Clear All</button> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of orderItems; let i = index">
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.productName}}</td>
+          <td>{{item.qty}}</td>
+          
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
 
 </form>

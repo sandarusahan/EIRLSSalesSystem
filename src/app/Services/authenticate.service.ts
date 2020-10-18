@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 })
 export class AuthenticateService {
 
-  authenticated:boolean = true;
+  authenticated:boolean = false;
   username:string = "Not logged in";
   constructor(private router:Router) { }
 
@@ -17,7 +17,7 @@ export class AuthenticateService {
         this.authenticated = true;
         this.username = username;
         msg = "Login success"
-        this.router.navigate([''])
+        this.router.navigate(['home'])
     }else{
       msg = "Invalid username/password"
       this.username = "Not logged in"

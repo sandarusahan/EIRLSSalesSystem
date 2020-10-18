@@ -34,7 +34,7 @@
       <td>{{order.salesOrderId}}</td>
       <td>{{order.timestamp | date:'medium'}}</td>
       <td>{{order.orderStatus}}</td>
-      <td><a [routerLink]="[customers, 'order.customer.customerId']">{{order.customer.customerName}}</a></td>
+      <td><a [routerLink]="['../customers', order.customer.customerId]">{{order.customer.customerName}}</a></td>
       <td>{{order.dueDate}}</td>
       <td>{{order.shipmentType}}</td>
       <td>{{order.courier}}</td>

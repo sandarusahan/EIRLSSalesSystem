@@ -6,8 +6,10 @@
   </div>
 
   <div class="btn-group ml-3" role="group" aria-label="First group">
-    <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button>
-    <button type="button" class="btn btn-secondary" (click)="onEditClick()" [disabled]="isNew">Edit</button>
+    <button type="button" class="btn btn-secondary" (click)="onNewClick()" [hidden]="isNew" [disabled]="isEdit">New</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancelNewClick()" [hidden]="!isNew">Cancel New</button>
+    <button type="button" class="btn btn-secondary" (click)="onEditClick()" [hidden]="isEdit" [disabled]="isNew || isEdit">Edit</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancelEditClick()" [hidden]="!isEdit">Cancel Edit</button>
     <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" [disabled]="isNew">Delete</button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -20,11 +22,21 @@
               </button>
             </div>
             <div class="modal-body">
-              Are you sure you want to delete customer {{customer.customerName}} ?
+              <span *ngIf="canDel">Are you sure you want to delete customer {{customer.customerName}} ?</span> 
+              <div *ngIf="!canDel">
+                <span class="text-danger">Cannot delete this cutomer !! {{customerOrders.length}}</span><br>
+                <small>This customer has active order(s).</small>
+              </div>
+              
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-              <button type="button" class="btn btn-primary" (click)="onDeleteClick(customer.customerId)" data-dismiss="modal">Yes! Delete</button>
+
+              <button *ngIf="canDel" type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button *ngIf="canDel" type="button" class="btn btn-primary" (click)="onDeleteClick(customer.customerId)" data-dismiss="modal">Yes! Delete</button>
+
+              <button *ngIf="!canDel" type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+
+              
             </div>
           </div>
         </div>
@@ -39,24 +51,13 @@
 <div class="container shadow pb-3 pt-2">
   
   <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" class="mb-3" id="cust-form">
-    <div class="row">
-      <div class="col-6">
-        <div class="form-group-sm">
-          <label for="id">ID</label>
-          <input type="id" class="form-control form-control-sm" id="id" placeholder="Customer ID generates automatically"
-            [(ngModel)]="customer.customerId" name="customerId" [readonly]="true">
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-group-sm">
-          <label for="name">Name</label>
-          <input type="name" class="form-control form-control-sm" id="name" placeholder="Name"
-            [(ngModel)]="customer.customerName" name="customerName" [readonly]="crudActionService.readonlybool"
-            required>
-        </div>
-      </div>
-    </div>
 
+    <div class="form-group-sm">
+      <label for="name">Name</label>
+      <input type="name" class="form-control form-control-sm" id="name" placeholder="Name"
+        [(ngModel)]="customer.customerName" name="customerName" [readonly]="crudActionService.readonlybool"
+        required>
+    </div>
     <div class="row">
       <div class="col-6">
         <div class="form-group-sm">
@@ -77,15 +78,15 @@
     </div>
 
     <div class="row">
-      <div class="col-4">
+      <div class="col">
         <div class="form-group-sm">
-          <label for="mainloc">Main Location</label>
+          <label for="mainloc">Customer Location</label>
           <input type="address" class="form-control form-control-sm" id="mainloc" placeholder="Main Location"
             [(ngModel)]="customer.customerMainLocation" name="customerMainLocation"
             [readonly]="crudActionService.readonlybool" required>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col">
         <div class="form-group-sm">
           <label for="deliveryLocation">Delivery Location</label>
           <input type="address" class="form-control form-control-sm" id="deliveryLocation"
@@ -93,14 +94,14 @@
             name="customerDeliveryLocation" [readonly]="crudActionService.readonlybool">
         </div>
       </div>
-      <div class="col-4">
+      <!-- <div class="col-4">
         <div class="form-group-sm">
           <label for="collectionLocation">Collection Location</label>
           <input type="address" class="form-control form-control-sm" id="collectionLocation"
             placeholder="Collection Location Address" [(ngModel)]="customer.customerCollectionLocation"
             name="customerCollectionLocation" [readonly]="crudActionService.readonlybool">
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="row">
@@ -120,7 +121,6 @@
           <select class="form-control form-control-sm" id="paymentFlag" [disabled]="crudActionService.readonlybool"
             [(ngModel)]="customer.customerPaymentFlag" name="customerPaymentFlag">
             <option value="CLEAR">Clear</option>
-            <option value="BLOCKED">Blocked</option>
             <option value="PENDING">Pending</option>
           </select>
         </div>
@@ -128,4 +128,37 @@
     </div>
   </form>
   <span class="text-danger">{{errMsg}}</span>
+</div>
+
+<div *ngIf="!isNew">
+  <table class="table table-sm table-hover mt-5">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Order ID</th>
+        <th scope="col">Order Type</th>
+        <th scope="col">Date</th>
+        <th scope="col">Status</th>
+        <!-- <th scope="col">Customer's name</th> -->
+        <th scope="col">Due Date</th>
+        <th scope="col">Shipment Type</th>
+        <th scope="col">Courier</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of customerOrders; let i = index" [routerLink]="order.orderType|navigator : order.salesOrderId">
+
+        <td>{{i+1}}</td>
+        <td>{{order.salesOrderId}}</td>
+        <td>{{order.orderType|orderType}}</td>
+        <td>{{order.timestamp | date:'medium'}}</td>
+        <td>{{order.orderStatus}}</td>
+        <!-- <td><a [routerLink]="['../customers', order.customer.customerId]">{{order.customer.customerName}}</a></td> -->
+        <td>{{order.dueDate}}</td>
+        <td>{{order.shipmentType}}</td>
+        <td><a [routerLink]="['../../courier', order.courier.courierId]">{{order.courier.company}}</a></td>
+
+      </tr>
+    </tbody>
+  </table>
 </div>

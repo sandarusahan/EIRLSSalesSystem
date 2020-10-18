@@ -12,14 +12,19 @@ import { Router } from '@angular/router';
 })
 export class FindReturnsComponent implements OnInit {
 
-  returns : SalesOrder[] = []
+  returnsEx : SalesOrder[] = []
+  returnsRep : SalesOrder[] = []
+  returnsCred : SalesOrder[] = []
   constructor(private crudManager:CrudActionsManageService, private orderService : SalesOrdersService, private auth:AuthenticateService, private router: Router) { }
 
   ngOnInit() {
     if(this.auth.authenticated){
       this.crudManager.show()
 
-    // this.orderService.getReturns().subscribe(res => this.returns = res)
+    this.orderService.getReturnsForCredit().subscribe(res => this.returnsCred = res)
+    this.orderService.getReturnsForExchage().subscribe(res => this.returnsEx = res)
+    this.orderService.getReturnsForRepair().subscribe(res => this.returnsRep = res)
+    
     }else{
       this.router.navigate(['login'])
 

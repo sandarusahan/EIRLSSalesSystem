@@ -11,6 +11,7 @@ import { SalesOrdersService } from './../Services/sales-orders.service';
 import { Product } from './../Models/Product';
 import { Component, OnInit } from '@angular/core';
 import { OrderItem } from '../Models/OrderItem';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-inquiry',
@@ -26,31 +27,16 @@ export class InquiryComponent implements OnInit {
   customer : Customer = <Customer> new Object();
   courierObj : Courier = <Courier> new Object();
   couriers : Courier[] = [];
+  //product : Product = new Product();
   // shipmentType : string = "post";
 
   orderItems : OrderItem[] = [];
 
   selection : SelectedItem[] = [];
+  prodErr: string="";
   
-  products : Product[] = [{productId:"jnfwn1", productName:"A", productPrice:22, qty:10, reference:""},
-                          {productId:"jnfwn2", productName:"B", productPrice:22, qty:10, reference:""},
-                          {productId:"jnfwn3", productName:"C", productPrice:22, qty:10, reference:""},
-                          {productId:"jnfwn4", productName:"D", productPrice:22, qty:10, reference:""},
-                          {productId:"jnfwn5", productName:"E", productPrice:22, qty:10, reference:""}]
   
-  constructor(private orderService : SalesOrdersService, private route:ActivatedRoute, private crudActionService: CrudActionsManageService, private router: Router, private customerService:CustomerService, private courierService : CourierService) { 
-    this.selection = [];
-    for(let i=0;i<this.products.length;i++){
-      let selectedItem = <SelectedItem> new Object();
-
-        selectedItem.product = this.products[i];
-        selectedItem.qtyReq = 0;
-        selectedItem.added = false;
-        this.selection.push(selectedItem)
-      
-    }
-    
-  }
+  constructor(private orderService : SalesOrdersService, private route:ActivatedRoute, private crudActionService: CrudActionsManageService, private router: Router, private customerService:CustomerService, private courierService : CourierService) { }
 
   ngOnInit() {
     
@@ -67,6 +53,20 @@ export class InquiryComponent implements OnInit {
       }
     })
 
+    // this.orderService.getProducts().subscribe(prods => {
+    //   this.products = prods;
+    //   console.log(prods)
+    //   this.selection = [];
+    // for(let i=0;i<this.products.length;i++){
+    //   let selectedItem = <SelectedItem> new Object();
+
+    //     selectedItem.product = this.products[i];
+    //     selectedItem.qtyReq = 0;
+    //     selectedItem.added = false;
+    //     this.selection.push(selectedItem)
+      
+    // }
+    // })
     
   }
 
@@ -100,9 +100,9 @@ export class InquiryComponent implements OnInit {
 
   
 
-  getQty(prodId:string){
-    return this.products.find(prod => prod.productId == prodId).qty;
-  }
+  // getQty(prodId:string){
+  //   return this.products.find(prod => prod.id == prodId).quantity;
+  // }
 
   getOrder(id : number) {
     this.orderService.getOrder(id).subscribe(inquiry => {
@@ -124,28 +124,31 @@ export class InquiryComponent implements OnInit {
     item.added = false;
   }
 
-  addItemToInquiry(item:SelectedItem){
-      
-      let orderItem : OrderItem = <OrderItem> new Object();
-      orderItem.productId = item.product.productId;
-      orderItem.productName = item.product.productName;
-      orderItem.productPrice = item.product.productPrice;
-      orderItem.available = item.product.qty>item.qtyReq
+  addItemToInquiry(form:NgForm){
+    let product = form.value;
+    let orderItem : OrderItem = <OrderItem> new Object();
+    orderItem.productId = product.id;
+    orderItem.productName = product.name;
+    orderItem.productPrice = product.price;
+    orderItem.available = true;
+    if(product.id != "" || product.name != "" || product.price != "") {
       if(orderItem.qty == null){
         orderItem.qty = 0;
       }
-      orderItem.qty = orderItem.qty + item.qtyReq;
+      orderItem.qty = product.quantity?product.quantity:1;
       orderItem.cancelled = false;
-      item.added = true
 
-      let oitem = this.orderItems.find(x => x.productName == orderItem.productName)
+      let oitem = this.orderItems.find(x => x.productId == product.id)
       if(oitem != null){
-        oitem.qty = orderItem.qty;
+        oitem.qty =+ orderItem.qty;
       }else{
         this.orderItems.push(orderItem);
+        form.resetForm();
       }
       
-      
+    }else {
+      this.prodErr = "**Product id, Product name or Price cannot be empty"
+    }
   }
 
   clearItem(index:number) {
@@ -161,6 +164,7 @@ export class InquiryComponent implements OnInit {
       this.inquiry.dueDate = moment(form.dueDate).format("YYYY-MM-DD");
       this.inquiry.shipmentType = form.shipmentType;
       this.inquiry.orderType = "INQUIRY"
+      this.inquiry.orderStatus = "NEW"
       if(this.customer != null){
         this.inquiry.customer = this.customer;
       }else{

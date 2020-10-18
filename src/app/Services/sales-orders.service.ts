@@ -1,3 +1,4 @@
+import { Product } from './../Models/Product';
 import { SalesOrder } from './../Models/SalesOrder';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -11,6 +12,7 @@ export class SalesOrdersService {
   orderUrl = "http://localhost:8080/sales-orders/"
   orderItemUrl = "http://localhost:8080/item/"
 
+  prodUrl = "http://192.168.8.164:8080/products";
   constructor(private http:HttpClient) { }
 
   getInquiries(){
@@ -33,6 +35,11 @@ export class SalesOrdersService {
   getOrdersByCustomer(orderType : string, customerId : string) {
 
     return this.http.get<SalesOrder[]>(this.orderUrl+"type/"+orderType+"/customer/"+customerId)
+  }
+
+  getOrdersByCustomerId(customerId : string) {
+
+    return this.http.get<SalesOrder[]>(this.orderUrl+"/customer/"+customerId)
   }
 
   getOrderTypeById(orderType, orderId){
@@ -80,8 +87,18 @@ export class SalesOrdersService {
           salesOrderObs = this.http.put<SalesOrder>(url, order);
           break;
         }
-        case "return" : {
-          order.orderType = "RETURN"
+        case "return_exchange" : {
+          order.orderType = "RETURN_EXCHANGE"
+          salesOrderObs = this.http.put<SalesOrder>(url, order);
+          break;
+        }
+        case "return_credit" : {
+          order.orderType = "RETURN_CREDIT"
+          salesOrderObs = this.http.put<SalesOrder>(url, order);
+          break;
+        }
+        case "return_repair" : {
+          order.orderType = "RETURN_REPAIR"
           salesOrderObs = this.http.put<SalesOrder>(url, order);
           break;
         }
@@ -91,10 +108,11 @@ export class SalesOrdersService {
   
     return salesOrderObs;
     
-  
-
-
     }
   }
-  
+
+  getProducts(){
+    return this.http.get<Product[]>(this.prodUrl);
+  }
+
 }

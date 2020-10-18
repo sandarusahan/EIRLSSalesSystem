@@ -4,6 +4,8 @@ import {  Customer} from './../Models/Customer';
 import {  CustomerService} from './../Services/customer.service';
 import {  ActivatedRoute,  Router} from '@angular/router';
 import {  Component,  OnInit} from '@angular/core';
+import { SalesOrdersService } from '../Services/sales-orders.service';
+import { SalesOrder } from '../Models/SalesOrder';
 
 @Component({
   selector: 'app-customers',
@@ -13,10 +15,17 @@ import {  Component,  OnInit} from '@angular/core';
 export class CustomersComponent implements OnInit {
 
   isNew: boolean = false;
+  isNewPage:boolean = false;
+  isEdit: boolean = false;
+  canDel:boolean = true;
   customer: Customer = < Customer > new Object();
+  loadedCustomer: Customer = < Customer > new Object();
+
+  customerOrders:SalesOrder[] = [];
+
   errBool: boolean = false;
   errMsg: string = "";
-  constructor(private route: ActivatedRoute, private customerService: CustomerService, private crudActionService: CrudActionsManageService, private router: Router) {}
+  constructor(private route: ActivatedRoute, private customerService: CustomerService, private crudActionService: CrudActionsManageService, private router: Router, private orderService:SalesOrdersService) {}
 
   ngOnInit() {
       this.route.paramMap.subscribe(param => {
@@ -24,20 +33,28 @@ export class CustomersComponent implements OnInit {
         if (id != "" || id != null) {
           if (id == "new") {
             this.onNewClick();
+            this.isNewPage = true;
           } else {
+            this.isNewPage = false;
             this.customerService.getCustomer(id).subscribe(customer => {
-                this.customer = < Customer > customer;
+                this.customer = this.loadedCustomer = < Customer > customer;
                 this.crudActionService.readonly();
               },
               err => {
                 console.log("error!!.." + err)
                 this.onNewClick();
               })
+
+            this.orderService.getOrdersByCustomerId(id).subscribe(res => {
+              this.customerOrders = res
+              this.canDel = this.customerOrders.length == 0
+            });  
           }
   
         }
       });
     
+      
   }
 
   onSubmit(form: Customer) {
@@ -61,24 +78,46 @@ export class CustomersComponent implements OnInit {
 
   onNewClick() {
     this.isNew = true;
+    this.isEdit = false;
     this.customer = new Customer();
     this.crudActionService.editable();
   }
-
+  onCancelNewClick() {
+    if(this.isNewPage){
+      this.router.navigate(['customers'])
+    }else {
+      this.isNew = false;
+      this.isEdit = false;
+      this.customer = this.loadedCustomer;
+      this.crudActionService.readonly();
+    }
+    
+  }
   onEditClick() {
     this.isNew = false;
+    this.isEdit = true;
     this.crudActionService.editable();
   }
-
+  onCancelEditClick(){
+    this.isNew = false;
+    this.isEdit = false;
+    this.crudActionService.readonly();
+  }
   onDeleteClick(id: string) {
-    this.customerService.removeCustomer(id).subscribe(res => {
-      if (res) {
-        console.log('deleted')
-        this.customer = new Customer();
-        this.router.navigate(['customers'])
+    if(this.customerOrders.length > 0){
+      this.canDel = false;
+    }else {
+      this.canDel = true;
+    
+      this.customerService.removeCustomer(id).subscribe(res => {
+        if (res) {
+          console.log('deleted')
+          this.customer = new Customer();
+          this.router.navigate(['customers'])
 
-      }
-    });
+        }
+      });
+    }
   }
 
   checkEmail(){
@@ -86,7 +125,7 @@ export class CustomersComponent implements OnInit {
     this.customerService.getCustomerByEmail(this.customer.customerEmail).subscribe(res => {
       if(res != null){
         this.errBool = true;
-        this.errMsg = "Customer with this email, already available"
+        this.errMsg = "Customer with this email, already exist"
       }else{
         this.errBool = false;
         this.errMsg = ""

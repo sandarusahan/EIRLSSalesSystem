@@ -35,40 +35,20 @@
   </div>
 
   <div class="btn-group ml-2" role="group">
-      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#returnmodel" [disabled]="!valid">Return this order</button>
-
-    <div class="modal fade" id="returnmodel" tabindex="-1" role="dialog" aria-labelledby="returnmodelLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Return Order</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <h5>Choose type of return</h5>
-          <div class="form-group-sm col-5">
-              <label for="cusid">Exchange</label>
-              <input [(ngModel)]="customer.customerEmail" name="customerEmail" type="checkbox" class="form-control form-control-sm" id="cusid"
-                readonly>
-            </div>
-            <div class="form-group-sm col-5">
-                <label for="cusid">Repair</label>
-                <input [(ngModel)]="customer.customerEmail" name="customerEmail" type="checkbox" class="form-control form-control-sm" id="cusid"
-                  readonly>
-              </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
-          <button type="button" class="btn btn-primary" (click)="onDeleteClick(customer.customerId)"
-            data-dismiss="modal">Confirm</button>
-          <!--  onDelete function needs to be edited .................................................. -->
-        </div>
+    <div class="btn-group dropright" >
+      <button [disabled]="!returnReady" type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Return this order 
+      </button>
+      <!-- <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="sr-only">Return</span>
+      </button> -->
+      <div class="dropdown-menu">
+        <!-- Dropdown menu links -->
+        <a class="dropdown-item" (click)="returnOrder('credit')">For Credit</a>
+        <a class="dropdown-item" (click)="returnOrder('exchange')">For Exchange</a>
+        <a class="dropdown-item" (click)="returnOrder('repair')">For Repair</a>
       </div>
     </div>
-  </div>
   </div>
 
 </div>
@@ -79,7 +59,7 @@
     <div class="form-group-sm">
       <label for="inqId">Order ID</label>
 
-      <div class="row">
+      <div class="row" *ngIf="isNew">
         <div class="col-10">
           <input [(ngModel)]="orderId" name="salesOrderId" type="text" class="form-control form-control-sm"
             id="inqId" placeholder="Enter Order Id and find the order">
@@ -98,12 +78,26 @@
           <input [(ngModel)]="order.dueDate" name="dueDate" type="date" class="form-control form-control-sm"
             id="duedate" readonly>
         </div>
+        <div class="form-group">
+          <label for="status">Oder Status</label>
+          <input [(ngModel)]="order.orderStatus" name="orderStatus" type="text" class="form-control form-control-sm"
+            id="orderStatus" readonly required>
+        </div>
       </div>
       <div class="col-6">
         <div class="form-group-sm">
           <label for="orderdate">Order Date</label>
           <input [(ngModel)]="order.orderDate" name="orderDate" type="date" class="form-control form-control-sm"
             id="orderdate" readonly>
+        </div>
+        <div class="form-group-sm">
+          <label for="deliverType">Delivery Type</label>
+          <select class="form-control" id="shipmentType" disabled
+            [(ngModel)]="order.shipmentType" name="shipmentType">
+            <option>POST</option>
+            <option>COURIER</option>
+
+          </select>
         </div>
       </div>
     </div>
@@ -150,15 +144,7 @@
       </div>
 
       <div class="col">
-        <div class="form-group">
-          <label for="deliverType">Delivery Type</label>
-          <select class="form-control" id="shipmentType" disabled
-            [(ngModel)]="order.shipmentType" name="shipmentType">
-            <option>POST</option>
-            <option>COURIER</option>
-
-          </select>
-        </div>
+        
         <div *ngIf="order.shipmentType == 'COURIER'" class="container shadow p-3 mb-5 mt-3 bg-white rounded">
           <span>Courier Details</span>
           

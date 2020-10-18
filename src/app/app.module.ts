@@ -23,6 +23,10 @@ import { FindReturnsComponent } from './find-returns/find-returns.component';
 import { CourierComponent } from './courier/courier.component';
 import { FindCourierComponent } from './find-courier/find-courier.component';
 import { LoginComponent } from './login/login.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NavigatorPipe } from './pipes/navigator.pipe';
+import { OrderTypePipe } from './pipes/order-type.pipe';
 
 
 @NgModule({
@@ -43,7 +47,11 @@ import { LoginComponent } from './login/login.component';
     FindReturnsComponent,
     CourierComponent,
     FindCourierComponent,
-    LoginComponent
+    LoginComponent,
+    NotFoundComponent,
+    DashboardComponent,
+    NavigatorPipe,
+    OrderTypePipe
     
   ],
   imports: [

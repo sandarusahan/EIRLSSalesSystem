@@ -44,7 +44,7 @@
 
 </div>
 
-<form #form="ngForm" id="inqForm">
+<form #form="ngForm" id="inqForm" class="mb-5 pb-5">
 
   <div class="container">
     <div class="form-group-sm">
@@ -186,37 +186,10 @@
   <span *ngIf="errBool&&errMsg != ''" class="text-danger"><i
       class="fas fa-exclamation-circle text-danger"></i>{{errMsg}}</span>
 
-  <div class="pr-3 pl-3">
-    <div class="row">
-      <div *ngIf="isNew" class="col">
-
-        <table class="table table-sm table-hover mt-3">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity Required</th>
-              <th scope="col">Add to Inquiry</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of selection; let i = index">
-
-              <td scope="row">{{i+1}}</td>
-              <td>{{item.product.productName}}</td>
-              <td>{{item.product.productPrice}}</td>
-              <td><input type="number" [(ngModel)]="item.qtyReq" name="qtyReq" placeholder="Enter amount" min="1">
-              </td>
-              <td><button type="button" [disabled]="0>=item.qtyReq" class="btn btn-secondary btn-sm"
-                  (click)="addItemToInquiry(item)">Add <i *ngIf="!item.added" class="fas fa-caret-right"></i><i
-                    *ngIf="item.added" class="fas fa-check-circle"></i></button></td>
-
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div *ngIf="isNew" class="col">
+ <!-- <div class="pr-3 pl-3">
+    <div class="row"> -->
+      
+     <!-- <div *ngIf="isNew" class="col">
         <table class="table table-hover">
           <thead>
             <tr>
@@ -225,7 +198,7 @@
               <th scope="col">Qty</th>
               <th scope="col">Availability</th>
               <th scope="col"></th>
-              <!-- <button (click)="clearAll()" class="btn btn-danger">Clear All</button> -->
+              <button (click)="clearAll()" class="btn btn-danger">Clear All</button>
             </tr>
           </thead>
           <tbody>
@@ -243,9 +216,9 @@
       </div>
     </div>
 
-  </div>
+  </div> -->
 
-  <div *ngIf="!isNew" class="container">
+  <!-- <div *ngIf="!isNew" class="container">
     <table class="table table-hover">
       <thead>
         <tr>
@@ -254,7 +227,7 @@
           <th scope="col">Qty</th>
           <th scope="col">Availability</th>
           <th scope="col"></th>
-          <!-- <button (click)="clearAll()" class="btn btn-danger">Clear All</button> -->
+          <button (click)="clearAll()" class="btn btn-danger">Clear All</button>
         </tr>
       </thead>
       <tbody>
@@ -269,6 +242,72 @@
 
       </tbody>
     </table>
-  </div>
+  </div> -->
+  <form *ngIf="isNew" #prod="ngForm" (ngSubmit)="addItemToInquiry(prod)" class="container shadow p-3 mb-5 mt-3 bg-white rounded">
+    <span>Product Details</span>
+    <div class="row">
+      <div class="form-group-sm col-5">
+        <label for="prodId">Product Id </label>
+        <input  name="id" ngModel #id="ngModel" type="text" class="form-control form-control-sm" id="prodId"
+          [readonly]="crudActionService.readonlybool" required>
+      </div>
+      <div class="form-group-sm col-7">
+        <label for="cusname">Product Name</label>
+        <input ngModel #name="ngModel" name="name" type="text"
+          class="form-control form-control-sm" id="prodname" required>
+      </div>
+    </div>
+    <div class="form-group-sm">
+      <label for="cusaddress">Price</label>
+      <input ngModel #price="ngModel" name="price" type="number"
+        class="form-control form-control-sm" id="prodPrice" required>
+    </div>
+    <div class="row">
+      <div class="col-8">
+        <div class="form-group-sm">
+          <label for="type">Reference</label>
+          <input ngModel #reference="ngModel" name="reference" type="text"
+            class="form-control form-control-sm" id="reference" required>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group-sm">
+          <label for="credbal">Quantity</label>
+          <input ngModel quantity="ngModel" name="quantity" type="number"
+            class="form-control form-control-sm" id="quantity" required>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-sm btn-secondary mt-2" >Add Product</button>
+    <span class="text-danger ml-2">{{prodErr}}</span>
+  </form>
 
+  <div *ngIf="isNew" class="col">
+
+    <table class="table table-sm table-hover mt-3">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Product Id</th>
+          <th scope="col">Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity Required</th>
+          <th scope="col">Line Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of orderItems; let i = index">
+
+          <td scope="row">{{i+1}}</td>
+          <td>{{item.productId}}</td>
+          <td>{{item.productName}}</td>
+          <td>{{item.productPrice}}</td>
+          <td><input type="number" [(ngModel)]="item.qty" name="qtyReq" placeholder="Enter amount" min="1">
+          </td>
+          <td>{{item.productPrice * item.qty}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </form>
