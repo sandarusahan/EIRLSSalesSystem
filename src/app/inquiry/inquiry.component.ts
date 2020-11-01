@@ -22,6 +22,7 @@ export class InquiryComponent implements OnInit {
   errBool:boolean = false;
   errMsg:string = ''
   isNew = false;
+  isEdit = false;
   inquiry : SalesOrder = <SalesOrder> new Object;
   customer : Customer = <Customer> new Object();
   courierObj : Courier = <Courier> new Object();
@@ -33,19 +34,23 @@ export class InquiryComponent implements OnInit {
 
   selection : SelectedItem[] = [];
   prodErr: string="";
+  isNewPage: boolean = false;
+  loadedInq: SalesOrder = new SalesOrder();
+  errBoolEmail: boolean = false;
+  errBoolMob: boolean = false;
   
   
   constructor(private orderService : SalesOrdersService, private route:ActivatedRoute, public crudActionService: CrudActionsManageService, private router: Router, private customerService:CustomerService, private courierService : CourierService) { }
 
   ngOnInit() {
-    
     this.route.paramMap.subscribe(param => {
       let id = param.get('id');
       if(id != null || id != ""){
         if(id != "new"){
-          console.log(id)
+          this.isNewPage = false;
           this.getOrder(+id);
         }else {
+          this.isNewPage = true;
           this.onNewClick();
 
         }
@@ -71,6 +76,7 @@ export class InquiryComponent implements OnInit {
 
   onNewClick() {
     this.isNew = true;
+    this.isEdit = false;
     this.inquiry = new SalesOrder();
     this.inquiry.orderDate = moment().format("YYYY-MM-DD");
     this.customer = new Customer();
@@ -81,9 +87,32 @@ export class InquiryComponent implements OnInit {
     this.getAllCouriers();
   }
 
+  onCancelNewClick() {
+    
+    if(this.isNewPage){
+      this.router.navigate(['inquiry'])
+    }else {
+      this.isNew = false;
+      this.isEdit = false;
+      this.errBool = false;
+      this.inquiry = this.loadedInq;
+      this.getOrder(this.loadedInq.salesOrderId);
+      this.crudActionService.readonly();
+    }
+    
+  }
+  
   onEditClick() {
-    this.isNew = true;
+    this.isNew = false;
+    this.isEdit = true;
+    this.getAllCouriers();
     this.crudActionService.editable();
+  }
+
+  onCancelEditClick(){
+    this.isNew = false;
+    this.isEdit = false;
+    this.crudActionService.readonly();
   }
 
   onDeleteClick(id: number) {
@@ -113,8 +142,7 @@ export class InquiryComponent implements OnInit {
       this.orderItems = this.inquiry.orderItems;
       // this.shipmentType = this.inquiry.shipmentType;
       this.crudActionService.readonly();
-    console.log(this.inquiry)
-
+      this.loadedInq = this.inquiry;
     },
     err => console.log("error fetching inquiries"+err))
   }
@@ -195,11 +223,34 @@ export class InquiryComponent implements OnInit {
     this.customerService.getCustomerByEmail(email).subscribe(res => {
       if(res != null){
         this.customer =res;
-        this.errBool = false
+        this.errBool = false;
+        this.errBoolEmail = false;
+        this.errBoolMob = false;
       }else{
         this.errBool = true
+        this.errBoolEmail = true
         this.customer = new Customer();
         this.errMsg = " Invalid email !!"
+      }
+      
+    },
+    err=>{
+      this.errBool = true
+    })
+  }
+
+  findCustomerByMobile(mobile){
+    this.customerService.getCustomerByMobile(mobile).subscribe(res => {
+      if(res != null){
+        this.customer =res;
+        this.errBool = false
+        this.errBoolMob = false
+        this.errBoolEmail = false;
+      }else{
+        this.errBool = true
+        this.errBoolMob = true
+        this.customer = new Customer();
+        this.errMsg = " Invalid Mobile No !!"
       }
       
     },
@@ -211,7 +262,6 @@ export class InquiryComponent implements OnInit {
   getAllCouriers(){
     this.courierService.getAllCouriers().subscribe(couriers => {
       this.couriers = couriers;
-      console.log(couriers)
     })
   }
 
@@ -229,38 +279,36 @@ export class InquiryComponent implements OnInit {
 
   validateForm(form){
     console.log(form)
-
-    // if(form.orderDate < form.dueDate){
-    //   this.errBool = true;
-    //   this.errMsg = "Due date must be after the order date !!"
-    // } 
-    // else if(form.orderDate = "" ||form.dueDate == ""){
-    //   this.errBool = true;
-    //   this.errMsg = "Due date must be after the order date !!"
-    // } 
-    // else if(form.customer == null){
-    //   console.log(form.customer)
-    //   this.errBool = true;
-    //   this.errMsg = "Inquiry must have a customer !!"
-    // }
-    // else if(form.shipmentType == ""|| form.shipmentType == null){
-    //   if(form.courier == null){
-    //     this.errBool = true;
-    //     this.errMsg = "Delivery type not found !!"
-    //   }
-    // }
-    // else if(form.shipmentType == "Courier"){
-    //   if(form.courier == null){
-    //     this.errBool = true;
-    //     this.errMsg = "Courier not found !!"
-    //   }
-    // }
-    // else{
+    if(form.orderDate = undefined){
+      this.errBool = true;
+      this.errMsg = "Due date must be after the order date !!"
+    } 
+    else if(form.dueDate = undefined){
+      this.errBool = true;
+      this.errMsg = "Due date must be after the order date !!"
+    } 
+    else if(form.customerName == undefined){
+      //console.log(form)
+      this.errBool = true;
+      this.errMsg = "Inquiry must have a customer !!"
+    }
+    else if(form.shipmentType == undefined){
+      if(form.courier == null){
+        this.errBool = true;
+        this.errMsg = "Delivery type not found !!"
+      }
+    }
+    else if(form.shipmentType == "Courier"){
+      if(form.vehicleType == undefined){
+        this.errBool = true;
+        this.errMsg = "Courier not found !!"
+      }
+    }
+    else{
       this.errBool = false;
       this.errMsg = "";
       this.onSubmit(form);
-    // }
-    console.log(this.errMsg)
+    }
 
   }
 }

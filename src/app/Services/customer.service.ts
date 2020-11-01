@@ -7,7 +7,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CustomerService {
 
-  url = "https://sales-app-saho.herokuapp.com/customer/"
+  url = "http://sales-app-saho.herokuapp.com/customer/"
+  //url = "http://localhost:8080/customer/"
   constructor(private http:HttpClient) { }
 
   getCustomers() {
@@ -20,6 +21,10 @@ export class CustomerService {
 
   getCustomerByEmail(email:string) {
     return this.http.get<Customer>(this.url+"email/"+email)
+  }
+
+  getCustomerByMobile(mobileNo:string) {
+    return this.http.get<Customer>(this.url+"mobile/"+mobileNo)
   }
 
   addCustomer(customer : Customer){

@@ -8,10 +8,12 @@
   </div>
 
   <div class="btn-group ml-3" role="group">
-    <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button>
-    <button type="button" class="btn btn-secondary" (click)="onEditClick()" [disabled]="isNew">Edit</button>
+    <button type="button" class="btn btn-secondary" (click)="onNewClick()" [hidden]="isNew" [disabled]="isEdit">New</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancelNewClick()" [hidden]="!isNew">Cancel New</button>
+    <button type="button" class="btn btn-secondary" (click)="onEditClick()" [hidden]="isEdit" [disabled]="isNew">Edit</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancelEditClick()" [hidden]="!isEdit">Cancel Edit</button>
     <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
-      [disabled]="isNew">Delete</button>
+      [disabled]="isNew || isEdit">Delete</button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
@@ -37,9 +39,8 @@
   </div>
 
   <div class="btn-group ml-2" role="group">
-    <button class="btn btn-success" *ngIf="isNew" form="inqForm" (click)="validateForm(form.value)">Create
-      inquiry</button>
-    <button class="btn btn-success" [disabled]="isNew" (click)="placeOrder()">Place as an order</button>
+    <button class="btn btn-success" *ngIf="isNew || isEdit" form="inqForm" (click)="validateForm(form.value)">Submit</button>
+    <button class="btn btn-success" [disabled]="isNew || isEdit" (click)="placeOrder()">Place as an order</button>
   </div>
 
 </div>
@@ -76,38 +77,29 @@
           <span>Customer Details</span>
           <div class="row">
             <div class="form-group-sm col-5">
-              <label for="cusid">Customer's Email <i *ngIf="errBool"
+              <label for="cusid">Customer's Email <i *ngIf="errBoolEmail"
                   class="far fa-times-circle text-danger"></i></label>
               <input [(ngModel)]="customer.customerEmail" (blur)="findCustomer(customer.customerEmail)"
-                name="customerEmail" type="email" class="form-control form-control-sm" id="cusid"
+                name="customerEmail" type="email" class="form-control form-control-sm" id="cusEmail"
                 [readonly]="crudActionService.readonlybool" required>
             </div>
-            <div class="form-group-sm col-7">
-              <label for="cusname">Customer's Name</label>
-              <input [(ngModel)]="customer.customerName" name="customerName" type="text"
-                class="form-control form-control-sm" id="cusname" readonly required>
+            <div class="form-group-sm col-5">
+              <label for="cusid">Customer's Mobile <i *ngIf="errBoolMob"
+                  class="far fa-times-circle text-danger"></i></label>
+              <input [(ngModel)]="customer.customerTelephone" (blur)="findCustomerByMobile(customer.customerTelephone)"
+                name="customerTelephone" type="tel" class="form-control form-control-sm" id="customerTelephone"
+                [readonly]="crudActionService.readonlybool" required>
             </div>
+          </div>
+          <div class="form-group-sm">
+            <label for="cusname">Customer's Name</label>
+            <input [(ngModel)]="customer.customerName" name="customerName" type="text"
+              class="form-control form-control-sm" id="cusname" readonly required>
           </div>
           <div class="form-group-sm">
             <label for="cusaddress">Customer's Main Address</label>
             <input [(ngModel)]="customer.customerMainLocation" name="customerMainLocation" type="text"
               class="form-control form-control-sm" id="cusaddress" readonly required>
-          </div>
-          <div class="row">
-            <div class="col-8">
-              <div class="form-group-sm">
-                <label for="type">Customer's Type</label>
-                <input [(ngModel)]="customer.customerType" name="customerType" type="text"
-                  class="form-control form-control-sm" id="type" readonly required>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group-sm">
-                <label for="credbal">Payment Status</label>
-                <input [(ngModel)]="customer.customerPaymentFlag" name="customerPaymentFlag" type="text"
-                  class="form-control form-control-sm" id="credbal" readonly required>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -243,7 +235,7 @@
       </tbody>
     </table>
   </div> -->
-  <form *ngIf="isNew" #prod="ngForm" (ngSubmit)="addItemToInquiry(prod)" class="container shadow p-3 mb-5 mt-3 bg-white rounded">
+  <form *ngIf="isNew || isEdit" #prod="ngForm" (ngSubmit)="addItemToInquiry(prod)" class="container shadow p-3 mb-5 mt-3 bg-white rounded">
     <span>Product Details</span>
     <div class="row">
       <div class="form-group-sm col-5">
@@ -282,7 +274,7 @@
     <span class="text-danger ml-2">{{prodErr}}</span>
   </form>
 
-  <div *ngIf="isNew" class="col">
+  <div class="col">
 
     <table class="table table-sm table-hover mt-3">
       <thead>

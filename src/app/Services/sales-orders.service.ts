@@ -12,7 +12,7 @@ export class SalesOrdersService {
   orderUrl = "https://sales-app-saho.herokuapp.com/sales-orders/"
   orderItemUrl = "https://sales-app-saho.herokuapp.com/item/"
 
-  prodUrl = "http://192.168.8.164:8080/products";
+  //prodUrl = "http://192.168.8.164:8080/products";
   constructor(private http:HttpClient) { }
 
   getInquiries(){
@@ -111,8 +111,8 @@ export class SalesOrdersService {
     }
   }
 
-  getProducts(){
-    return this.http.get<Product[]>(this.prodUrl);
-  }
+  // getProducts(){
+  //   return this.http.get<Product[]>(this.prodUrl);
+  // }
 
 }

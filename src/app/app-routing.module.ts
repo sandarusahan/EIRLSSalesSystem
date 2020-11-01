@@ -17,10 +17,11 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
+  {path:'', redirectTo:'home', pathMatch:'full'},
   {path:'login', component: LoginComponent},
   {path:'home', component: DashboardComponent},
   {path:'customers', component: FindCutomersComponent},
-  {path: 'customers/:id', component: CustomersComponent},
+  {path:'customers/:id', component: CustomersComponent},
   {path:'inquiry', component: FindInquiryComponent},
   {path:'inquiry/:id', component: InquiryComponent},
   {path:'orders', component: FindOrdersComponent},

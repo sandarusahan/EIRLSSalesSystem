@@ -50,7 +50,7 @@
 </div>
 <div class="container shadow pb-3 pt-2">
   
-  <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" class="mb-3" id="cust-form">
+  <form #form="ngForm" (ngSubmit)="onSubmit(form.value)" class="mb-3" id="cust-form" name="cust-form">
 
     <div class="form-group-sm">
       <label for="name">Name</label>
@@ -61,10 +61,12 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group-sm">
-          <label for="tele">Contact Number</label>
+          <label for="tele">Contact Number <i *ngIf="mobNoValid=='invalid'"
+            class="far fa-times-circle text-danger"></i></label>
           <input type="tel" class="form-control form-control-sm" id="tele" placeholder="Contact Number"
-            [(ngModel)]="customer.customerTelephone" name="customerTelephone"
+            [(ngModel)]="customer.customerTelephone" (input)="mobileNumberValidation(customer.customerTelephone)" name="customerTelephone"
             [readonly]="crudActionService.readonlybool" pattern="[0-9]{10}" required>
+            
         </div>
       </div>
       <div class="col-6">

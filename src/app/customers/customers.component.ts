@@ -25,6 +25,7 @@ export class CustomersComponent implements OnInit {
 
   errBool: boolean = false;
   errMsg: string = "";
+  mobNoValid: string = 'na';
   constructor(private route: ActivatedRoute, private customerService: CustomerService, public crudActionService: CrudActionsManageService, private router: Router, private orderService:SalesOrdersService) {}
 
   ngOnInit() {
@@ -123,11 +124,29 @@ export class CustomersComponent implements OnInit {
   }
 
   checkEmail(){
-    console.log(this.customer.customerEmail)
-    this.customerService.getCustomerByEmail(this.customer.customerEmail).subscribe(res => {
+    if(!this.customer.customerEmail.includes('@')){
+      this.errBool = true;
+      this.errMsg = "Invalid Email address"
+    }else{
+      this.errMsg = ""
+      this.customerService.getCustomerByEmail(this.customer.customerEmail).subscribe(res => {
+        if(res != null){
+          this.errBool = true;
+          this.errMsg = "Customer with this email, already exist"
+        }else{
+          this.errBool = false;
+          this.errMsg = ""
+        }
+      })
+    }
+    
+  }
+
+  checkMobileNo(){
+    this.customerService.getCustomerByMobile(this.customer.customerTelephone).subscribe(res => {
       if(res != null){
         this.errBool = true;
-        this.errMsg = "Customer with this email, already exist"
+        this.errMsg = "Customer with this Mobile Number, already exist"
       }else{
         this.errBool = false;
         this.errMsg = ""
@@ -135,4 +154,18 @@ export class CustomersComponent implements OnInit {
     })
   }
 
+  mobileNumberValidation(mobNo:string){
+    var regex = new RegExp('^\\d+$');
+    if(mobNo != "" || mobNo != null){
+      if(regex.test(mobNo) && mobNo.length >= 9 && mobNo.length < 14){
+        this.mobNoValid = 'valid';
+        this.checkMobileNo();
+      } else {
+        this.mobNoValid = 'invalid';
+      }
+    }else {
+      this.mobNoValid = 'invalid';
+    }
+    
+  }
 }
