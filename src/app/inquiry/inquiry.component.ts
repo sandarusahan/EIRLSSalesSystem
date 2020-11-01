@@ -8,7 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { SalesOrder } from './../Models/SalesOrder';
 import { SalesOrdersService } from './../Services/sales-orders.service';
-import { Product } from './../Models/Product';
 import { Component, OnInit } from '@angular/core';
 import { OrderItem } from '../Models/OrderItem';
 import { NgForm } from '@angular/forms';
@@ -36,7 +35,7 @@ export class InquiryComponent implements OnInit {
   prodErr: string="";
   
   
-  constructor(private orderService : SalesOrdersService, private route:ActivatedRoute, private crudActionService: CrudActionsManageService, private router: Router, private customerService:CustomerService, private courierService : CourierService) { }
+  constructor(private orderService : SalesOrdersService, private route:ActivatedRoute, public crudActionService: CrudActionsManageService, private router: Router, private customerService:CustomerService, private courierService : CourierService) { }
 
   ngOnInit() {
     
@@ -87,7 +86,7 @@ export class InquiryComponent implements OnInit {
     this.crudActionService.editable();
   }
 
-  onDeleteClick(id: string) {
+  onDeleteClick(id: number) {
     this.orderService.deleteOrder(id).subscribe(res => {
       if (res) {
         console.log('deleted')

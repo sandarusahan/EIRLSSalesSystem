@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CustomerService {
 
-  url = "http://localhost:8080/customer/"
+  url = "https://sales-app-saho.herokuapp.com/customer/"
   constructor(private http:HttpClient) { }
 
   getCustomers() {

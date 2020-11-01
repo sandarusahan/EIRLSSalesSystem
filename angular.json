@@ -99,6 +99,14 @@
               "**/node_modules/**"
             ]
           }
+        },
+        "deploy": {
+          "builder": "@netlify-builder/deploy:deploy",
+          "options": {
+            "outputPath": "dist/EIRLSSalesSystem",
+            "netlifyToken": "Y6HJSj4fAUojdmS8xh4ft5jAfYYotdNZVCD1bDy2v3E",
+            "siteId": "07daef33-2f08-4a12-9950-5b6ff380f0bc"
+          }
         }
       }
     },

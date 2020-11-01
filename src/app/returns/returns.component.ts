@@ -62,7 +62,7 @@ export class ReturnsComponent implements OnInit {
     // this.crudActionService.editable();
   }
 
-  onDeleteClick(id: string) {
+  onDeleteClick(id: number) {
     this.orderService.deleteOrder(id).subscribe(res => {
       if (res) {
         console.log('deleted')

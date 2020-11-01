@@ -1,20 +1,8 @@
 <router-outlet></router-outlet>
-<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-
-  <div class="btn-group ml-2" role="group" aria-label="First group">
-    <!-- <button type="button" class="btn btn-secondary" (click)="onNewClick()">New</button> -->
-    <button type="button" class="btn btn-secondary" (click)="onDeleteClick()">Delete</button>
-  </div>
-
-</div>
 
 <table class="table table-sm table-hover mt-5">
   <thead>
     <tr>
-      <th scope="col">
-        <button type="button" class="btn btn-secondary btn-sm" (click)="crudManager.select= !crudManager.select"><i
-            class="fas fa-check-square"></i></button>
-      </th>
       <th scope="col">#</th>
       <th scope="col">Order ID</th>
       <th scope="col">Date</th>
@@ -27,9 +15,6 @@
   </thead>
   <tbody>
     <tr *ngFor="let order of orders; let i = index" [routerLink]="[order.salesOrderId]">
-
-      <td scope="row"><input type="checkbox" name="selected" (change)="selected($event)" *ngIf="crudManager.select">
-      </td>
       <td>{{i+1}}</td>
       <td>{{order.salesOrderId}}</td>
       <td>{{order.timestamp | date:'medium'}}</td>

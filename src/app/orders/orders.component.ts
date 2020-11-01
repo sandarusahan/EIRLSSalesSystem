@@ -22,7 +22,7 @@ export class OrdersComponent implements OnInit {
   orderItems: OrderItem[] = [];
 
     
-  constructor(private route:ActivatedRoute, private router:Router,private crudActionService: CrudActionsManageService, private orderService: SalesOrdersService) { }
+  constructor(private route:ActivatedRoute, private router:Router,public crudActionService: CrudActionsManageService, private orderService: SalesOrdersService) { }
 
   ngOnInit() {
     
@@ -71,7 +71,7 @@ export class OrdersComponent implements OnInit {
     this.crudActionService.editable();
   }
 
-  onDeleteClick(id: string) {
+  onDeleteClick(id: number) {
     this.orderService.deleteOrder(id).subscribe(res => {
       console.log('deleted' + res)
 

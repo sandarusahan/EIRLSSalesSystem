@@ -34,7 +34,7 @@
       <button class="btn btn-success" [disabled]="order.orderStatus == 'Cancelled'" (click)="cancelOrder()">Cancel order</button>
     </div>
   </div>
-<form #form="ngForm" (ngSubmit)="onSubmit(form.value)" id="orderForm">
+<form #form="ngForm" id="orderForm">
   <div class="container">
     <div class="row">
       <div class="col">
@@ -75,9 +75,8 @@
           <span>Customer Details</span>
           <div class="row">
             <div class="form-group-sm col-5">
-              <label for="cusid">Customer's Email <i *ngIf="errBool"
-                  class="far fa-times-circle text-danger"></i></label>
-              <input [(ngModel)]="customer.customerEmail" (blur)="findCustomer(customer.customerEmail)"
+              <label for="cusid">Customer's Email </label>
+              <input [(ngModel)]="customer.customerEmail"
                 name="customerEmail" type="email" class="form-control form-control-sm" id="cusid"
                 [readonly]="crudActionService.readonlybool" required>
             </div>
@@ -111,7 +110,7 @@
         </div>
 
 
-        <div *ngIf="order.shipmentType == COURIER" class="container shadow p-3 mb-5 bg-white rounded">
+        <div *ngIf="order.shipmentType == 'COURIER'" class="container shadow p-3 mb-5 bg-white rounded">
           <span>Courier Details</span>
           <div class="row">
             <div class="form-group col-6">

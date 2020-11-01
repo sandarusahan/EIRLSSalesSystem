@@ -24,8 +24,8 @@
             <div class="modal-body">
               <span *ngIf="canDel">Are you sure you want to delete customer {{customer.customerName}} ?</span> 
               <div *ngIf="!canDel">
-                <span class="text-danger">Cannot delete this cutomer !! {{customerOrders.length}}</span><br>
-                <small>This customer has active order(s).</small>
+                <span class="text-danger">Cannot delete this cutomer !!</span><br>
+                <small>This customer is assigned for {{customerOrders.length}} active order(s).</small>
               </div>
               
             </div>
@@ -104,14 +104,14 @@
       </div> -->
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-6">
-        <div class="form-group-sm">
+        <div class="form-group-sm" hidden>
           <label for="customertype">Customer Type</label>
           <select class="form-control form-control-sm" id="customertype" [disabled]="crudActionService.readonlybool"
             [(ngModel)]="customer.customerType" name="customerType">
             <option>Lead</option>
-            <option>Customer</option>
+            <option selected>Customer</option>
           </select>
         </div>
       </div>
@@ -125,7 +125,7 @@
           </select>
         </div>
       </div>
-    </div>
+    </div> -->
   </form>
   <span class="text-danger">{{errMsg}}</span>
 </div>

@@ -13,7 +13,7 @@ export class CourierComponent implements OnInit {
 
   courierObj:Courier = new Courier;
   isNew: boolean = false;
-  constructor(private route:ActivatedRoute,private router:Router ,private courierService:CourierService, private crudActionService:CrudActionsManageService) { }
+  constructor(private route:ActivatedRoute,private router:Router ,private courierService:CourierService, public crudActionService:CrudActionsManageService) { }
 
   ngOnInit() {
     this.isNew = false;

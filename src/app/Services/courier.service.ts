@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CourierService {
 
-  url = "http://localhost:8080/courier/"
+  url = "https://sales-app-saho.herokuapp.com/courier/"
   constructor(private http:HttpClient) { }
 
   getAllCouriers(){

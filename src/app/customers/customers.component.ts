@@ -25,7 +25,7 @@ export class CustomersComponent implements OnInit {
 
   errBool: boolean = false;
   errMsg: string = "";
-  constructor(private route: ActivatedRoute, private customerService: CustomerService, private crudActionService: CrudActionsManageService, private router: Router, private orderService:SalesOrdersService) {}
+  constructor(private route: ActivatedRoute, private customerService: CustomerService, public crudActionService: CrudActionsManageService, private router: Router, private orderService:SalesOrdersService) {}
 
   ngOnInit() {
       this.route.paramMap.subscribe(param => {
@@ -34,6 +34,7 @@ export class CustomersComponent implements OnInit {
           if (id == "new") {
             this.onNewClick();
             this.isNewPage = true;
+            this.customer.customerType = "Customer";
           } else {
             this.isNewPage = false;
             this.customerService.getCustomer(id).subscribe(customer => {
@@ -80,6 +81,7 @@ export class CustomersComponent implements OnInit {
     this.isNew = true;
     this.isEdit = false;
     this.customer = new Customer();
+    this.customer.customerType = "Customer"
     this.crudActionService.editable();
   }
   onCancelNewClick() {

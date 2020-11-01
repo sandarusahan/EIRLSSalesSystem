@@ -24,11 +24,11 @@
             </button>
           </div>
           <div class="modal-body">
-            Are you sure you want to delete customer {{customer.customerName}} ?
+            Are you sure you want to delete Inquiry {{inquiry.salesOrderId}} ?
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-            <button type="button" class="btn btn-primary" (click)="onDeleteClick(customer.customerId)"
+            <button type="button" class="btn btn-primary" (click)="onDeleteClick(inquiry.salesOrderId)"
               data-dismiss="modal">Yes! Delete</button>
           </div>
         </div>
