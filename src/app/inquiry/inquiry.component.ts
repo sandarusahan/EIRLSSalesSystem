@@ -38,7 +38,7 @@ export class InquiryComponent implements OnInit {
   loadedInq: SalesOrder = new SalesOrder();
   errBoolEmail: boolean = false;
   errBoolMob: boolean = false;
-  
+  inqTotal:number = 0;
   
   constructor(private orderService : SalesOrdersService, private route:ActivatedRoute, public crudActionService: CrudActionsManageService, private router: Router, private customerService:CustomerService, private courierService : CourierService) { }
 
@@ -71,7 +71,6 @@ export class InquiryComponent implements OnInit {
       
     // }
     // })
-    
   }
 
   onNewClick() {
@@ -95,7 +94,8 @@ export class InquiryComponent implements OnInit {
       this.isNew = false;
       this.isEdit = false;
       this.errBool = false;
-      this.inquiry = this.loadedInq;
+      this.inquiry = new SalesOrder();
+      this.orderItems = []
       this.getOrder(this.loadedInq.salesOrderId);
       this.crudActionService.readonly();
     }
@@ -112,6 +112,9 @@ export class InquiryComponent implements OnInit {
   onCancelEditClick(){
     this.isNew = false;
     this.isEdit = false;
+    this.inquiry = this.loadedInq;
+    this.orderItems = [];
+    this.getOrder(this.loadedInq.salesOrderId);
     this.crudActionService.readonly();
   }
 
@@ -143,6 +146,8 @@ export class InquiryComponent implements OnInit {
       // this.shipmentType = this.inquiry.shipmentType;
       this.crudActionService.readonly();
       this.loadedInq = this.inquiry;
+
+      this.inqTotal = this.inquiryTotal();
     },
     err => console.log("error fetching inquiries"+err))
   }
@@ -157,31 +162,42 @@ export class InquiryComponent implements OnInit {
     orderItem.productId = product.id;
     orderItem.productName = product.name;
     orderItem.productPrice = product.price;
+    orderItem.qty = product.quantity;
     orderItem.available = true;
-    if(product.id != "" || product.name != "" || product.price != "") {
-      if(orderItem.qty == null){
-        orderItem.qty = 0;
-      }
-      orderItem.qty = product.quantity?product.quantity:1;
+    if(product.id != "" && product.name != "" && product.price != "" && product.quantity > 0) {
+      
       orderItem.cancelled = false;
 
       let oitem = this.orderItems.find(x => x.productId == product.id)
       if(oitem != null){
-        oitem.qty =+ orderItem.qty;
-      }else{
-        this.orderItems.push(orderItem);
+        this.orderItems[this.orderItems.indexOf(oitem)].qty = oitem.qty + product.quantity;
         form.resetForm();
+      }else{
+        if(orderItem.productId.length>=1 && orderItem.productName.length>=1 && orderItem.productPrice >= 1){
+          this.orderItems.push(orderItem);
+          form.resetForm();
+        }
+          
       }
       
     }else {
       this.prodErr = "**Product id, Product name or Price cannot be empty"
     }
+    this.inqTotal = this.inquiryTotal();
   }
 
-  clearItem(index:number) {
-    // this.orderService.deleteOrderItem(item.orderItemId).subscribe(res => console.log(res))   
-    // this.ngOnInit();
-    this.orderItems.splice(index,1);
+  clearItem(index:number, orderItemId:number) {
+    console.log(orderItemId)
+    if(orderItemId == undefined){
+      this.orderItems.splice(index,1);
+    }else {
+      this.orderService.deleteOrderItem(orderItemId).subscribe(res => {
+        console.log(res);
+        this.orderItems.splice(index,1);
+        this.inqTotal = this.inquiryTotal();
+      });
+    }   
+    
   }
 
   onSubmit(form){
@@ -310,5 +326,13 @@ export class InquiryComponent implements OnInit {
       this.onSubmit(form);
     }
 
+  }
+
+  inquiryTotal():number {
+    let total:number= 0;
+    for(let i=0;i<this.orderItems.length;i++){
+      total = total + (this.orderItems[i].qty * this.orderItems[i].productPrice);
+    }
+    return total;
   }
 }

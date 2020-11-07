@@ -252,7 +252,7 @@
     <div class="form-group-sm">
       <label for="cusaddress">Price</label>
       <input ngModel #price="ngModel" name="price" type="number"
-        class="form-control form-control-sm" id="prodPrice" required>
+        class="form-control form-control-sm" id="prodPrice" step=".01" required>
     </div>
     <div class="row">
       <div class="col-8">
@@ -266,7 +266,7 @@
         <div class="form-group-sm">
           <label for="credbal">Quantity</label>
           <input ngModel quantity="ngModel" name="quantity" type="number"
-            class="form-control form-control-sm" id="quantity" required>
+            class="form-control form-control-sm" id="quantity" min="1" step="1" required>
         </div>
       </div>
     </div>
@@ -275,7 +275,7 @@
   </form>
 
   <div class="col">
-
+<small>Inquiry total: Rs. <b>{{inqTotal | currency:'LKR':''}}</b></small>
     <table class="table table-sm table-hover mt-3">
       <thead>
         <tr>
@@ -283,8 +283,9 @@
           <th scope="col">Product Id</th>
           <th scope="col">Name</th>
           <th scope="col">Price</th>
-          <th scope="col">Quantity Required</th>
+          <th scope="col">Quantity</th>
           <th scope="col">Line Total</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -293,11 +294,10 @@
           <td scope="row">{{i+1}}</td>
           <td>{{item.productId}}</td>
           <td>{{item.productName}}</td>
-          <td>{{item.productPrice}}</td>
-          <td><input type="number" [(ngModel)]="item.qty" name="qtyReq" placeholder="Enter amount" min="1">
-          </td>
-          <td>{{item.productPrice * item.qty}}</td>
-
+          <td>{{item.productPrice | currency:'LKR':'' }}</td>
+          <td>{{item.qty}}</td>
+          <td>{{item.productPrice * item.qty  | currency:'LKR':'' }}</td>
+          <td><button [disabled]="!(isNew || isEdit)" class="btn btn-sm btn-danger" (click)="clearItem(i, item.orderItemId)">Del</button></td>
         </tr>
       </tbody>
     </table>
