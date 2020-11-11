@@ -62,4 +62,12 @@ export class AuthenticateService {
   public getToken(): string {
     return sessionStorage.getItem('TOKEN_KEY');
   }
+
+  isAuthenticated(): boolean {
+    if(this.getToken() == null && !this.authenticated) {
+      return false;
+    }else {
+      return true;
+    }
+  }
 }

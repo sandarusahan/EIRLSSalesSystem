@@ -18,6 +18,9 @@ export class MainComponent implements OnInit {
   constructor(private router: Router, public auth:AuthenticateService) { }
 
   ngOnInit() {
+    if(!this.auth.isAuthenticated()){
+      this.router.navigate(['login']);
+    }
     this.router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event)
     })

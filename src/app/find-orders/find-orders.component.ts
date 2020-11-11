@@ -21,7 +21,7 @@ export class FindOrdersComponent implements OnInit {
 
       this.orderService.getOrders().subscribe(res => this.orders = res)
     }else{
-      this.router.navigate(['login'])
+      this.router.navigate(['login']);
 
     }
     
