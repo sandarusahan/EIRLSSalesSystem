@@ -9,10 +9,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SalesOrdersService {
-  orderUrl = "http://localhost:8080/sales-orders/"
-  orderItemUrl = "http://localhost:8080/item/"
-  // orderUrl = "https://sales-app-saho.herokuapp.com/sales-orders/"
-  // orderItemUrl = "https://sales-app-saho.herokuapp.com/item/"
+  // orderUrl = "http://localhost:8080/sales-orders/"
+  // orderItemUrl = "http://localhost:8080/item/"
+  orderUrl = "https://sales-app-saho.herokuapp.com/sales-orders/"
+  orderItemUrl = "https://sales-app-saho.herokuapp.com/item/"
   //prodUrl = "http://192.168.8.164:8080/products";
   constructor(private http:HttpClient) { }
 
