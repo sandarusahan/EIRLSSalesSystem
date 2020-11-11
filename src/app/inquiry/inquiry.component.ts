@@ -224,7 +224,7 @@ export class InquiryComponent implements OnInit {
       this.inquiry = inq;
       this.isNew = false;
       this.router.navigate(['inquiry']);
-    })
+    });
     }
     
   }

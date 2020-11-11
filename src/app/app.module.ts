@@ -1,3 +1,4 @@
+import { authInterceptorProviders } from './auth.interceptor';
 import { CrudActionsManageService } from './Services/crud-actions-manage.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -27,6 +28,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavigatorPipe } from './pipes/navigator.pipe';
 import { OrderTypePipe } from './pipes/order-type.pipe';
+import { RegisterUserComponent } from './register-user/register-user.component';
 
 
 @NgModule({
@@ -51,7 +53,8 @@ import { OrderTypePipe } from './pipes/order-type.pipe';
     NotFoundComponent,
     DashboardComponent,
     NavigatorPipe,
-    OrderTypePipe
+    OrderTypePipe,
+    RegisterUserComponent
     
   ],
   imports: [
@@ -62,7 +65,8 @@ import { OrderTypePipe } from './pipes/order-type.pipe';
     HttpClientModule
   ],
   providers: [
-    CrudActionsManageService
+    CrudActionsManageService,
+    authInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

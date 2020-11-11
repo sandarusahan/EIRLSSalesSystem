@@ -4,7 +4,8 @@
     </div>
     <div class="btn-group ml-3" role="group">
         <!-- <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button> -->
-    <button type="button" class="btn btn-secondary" (click)="onEditClick()">Edit</button>
+    <button type="button" class="btn btn-secondary" (click)="onEditClick()" [hidden]="isEdit">Edit</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancelEditClick()" [hidden]="!isEdit">Cancel Edit</button>
     <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">Delete</button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -31,6 +32,7 @@
     </div>
 
     <div class="btn-group ml-2" role="group">
+      <button class="btn btn-success" [disabled]="!isEdit" (click)="onSubmit()" form="orderForm">Submit</button>
       <button class="btn btn-success" [disabled]="order.orderStatus == 'Cancelled'" (click)="cancelOrder()">Cancel order</button>
     </div>
   </div>
@@ -51,7 +53,7 @@
         <div class="form-group">
           <label for="orderdate">Order Date</label>
           <input [(ngModel)]="order.orderDate" name="orderDate" type="date" class="form-control form-control-sm"
-            id="orderdate" [readonly]="crudActionService.readonlybool" required>
+            id="orderdate" readonly required>
         </div>
         <div class="form-group">
           <label for="orderdate">Order Due Date</label>
@@ -61,7 +63,7 @@
         <div class="form-group">
           <label for="deltype">Delivery Type</label>
           <input [(ngModel)]="order.shipmentType" name="shipmentType" type="text" class="form-control form-control-sm"
-            id="shipmentType" [readonly]="crudActionService.readonlybool" required>
+            id="shipmentType" readonly required>
         </div>
         <div class="form-group">
           <label for="deladdress">Delivery Address</label>
@@ -74,39 +76,29 @@
         <div class="container shadow p-3 mb-5 mt-3 bg-white rounded">
           <span>Customer Details</span>
           <div class="row">
-            <div class="form-group-sm col-5">
-              <label for="cusid">Customer's Email </label>
+            <div class="form-group-sm col">
+              <label for="cusid">Email </label>
               <input [(ngModel)]="customer.customerEmail"
                 name="customerEmail" type="email" class="form-control form-control-sm" id="cusid"
-                [readonly]="crudActionService.readonlybool" required>
+                readonly required>
             </div>
-            <div class="form-group-sm col-7">
-              <label for="cusname">Customer's Name</label>
-              <input [(ngModel)]="customer.customerName" name="customerName" type="text"
-                class="form-control form-control-sm" id="cusname" readonly required>
+            <div class="form-group-sm col">
+              <label for="cusname">Mobile No</label>
+              <input [(ngModel)]="customer.customerTelephone" name="customerTelephone" type="tel"
+                class="form-control form-control-sm" id="cusmob" readonly required>
             </div>
           </div>
           <div class="form-group-sm">
-            <label for="cusaddress">Customer's Main Address</label>
+            <label for="cusname">Name</label>
+            <input [(ngModel)]="customer.customerName" name="customerName" type="text"
+              class="form-control form-control-sm" id="cusname" readonly required>
+          </div>
+          <div class="form-group-sm">
+            <label for="cusaddress">Main Address</label>
             <input [(ngModel)]="customer.customerMainLocation" name="customerMainLocation" type="text"
               class="form-control form-control-sm" id="cusaddress" readonly required>
           </div>
-          <div class="row">
-            <div class="col-8">
-              <div class="form-group-sm">
-                <label for="type">Customer's Type</label>
-                <input [(ngModel)]="customer.customerType" name="customerType" type="text"
-                  class="form-control form-control-sm" id="type" readonly required>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group-sm">
-                <label for="credbal">Payment Status</label>
-                <input [(ngModel)]="customer.customerPaymentFlag" name="customerPaymentFlag" type="text"
-                  class="form-control form-control-sm" id="credbal" readonly required>
-              </div>
-            </div>
-          </div>
+
         </div>
 
 
@@ -147,79 +139,30 @@
     </div>
   </div>
 
-  <div class="pr-3 pl-3">
-    <div class="row">
-      <!-- <div *ngIf="isNew" class="col">
-
-        <table class="table table-sm table-hover mt-3">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity Required</th>
-              <th scope="col">Add to Inquiry</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of selection; let i = index">
-
-              <td scope="row">{{i+1}}</td>
-              <td>{{item.product.name}}</td>
-              <td>{{item.product.price}}</td>
-              <td><input type="number" [(ngModel)]="item.qtyReq" name="qtyReq" placeholder="Enter amount" min="1">
-              </td>
-              <td><button type="button" [disabled]="0>=item.qtyReq" class="btn btn-secondary btn-sm"
-                  (click)="addItemToInquiry(item)">Add <i *ngIf="!item.added" class="fas fa-caret-right"></i><i
-                    *ngIf="item.added" class="fas fa-check-circle"></i></button></td>
-
-            </tr>
-          </tbody>
-        </table>
-      </div> -->
-      <div *ngIf="isNew" class="col">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Qty</th>
-              <th scope="col"></th>
-              <!-- <button (click)="clearAll()" class="btn btn-danger">Clear All</button> -->
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of orderItems; let i = index">
-              <th scope="row">{{i+1}}</th>
-              <td>{{item.productName}}</td>
-              <td>{{item.qty}}</td>
-              <td><i (click)="clearItem(i)" class="fas fa-trash text-danger ml-4"></i></td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-
-  <div *ngIf="!isNew" class="container">
+  
+  <small>Inquiry total: Rs. <b>{{inqTotal | currency:'LKR':''}}</b></small>
+  <div class="container">
     <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">#</th>
+          <th scope="col">Product Id</th>
           <th scope="col">Name</th>
-          <th scope="col">Qty</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Line Total</th>
           
           <!-- <button (click)="clearAll()" class="btn btn-danger">Clear All</button> -->
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of orderItems; let i = index">
-          <th scope="row">{{i+1}}</th>
+          <td scope="row">{{i+1}}</td>
+          <td>{{item.productId}}</td>
           <td>{{item.productName}}</td>
+          <td>{{item.productPrice | currency:'LKR':'' }}</td>
           <td>{{item.qty}}</td>
-          
+          <td>{{item.productPrice * item.qty  | currency:'LKR':'' }}</td>
         </tr>
 
       </tbody>

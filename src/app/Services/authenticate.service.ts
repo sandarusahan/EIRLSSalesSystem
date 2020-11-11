@@ -1,6 +1,11 @@
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { User } from './../Models/User';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -9,27 +14,52 @@ export class AuthenticateService {
 
   authenticated:boolean = false;
   username:string = "Not logged in";
-  constructor(private router:Router) { }
 
-  authenticate(username:string, password:string){
+  // url = "http://sales-app-saho.herokuapp.com/users/"
+  url = "http://localhost:8080/users/"
+  constructor(private router:Router, private http:HttpClient) { }
+
+  authenticate(uname:string, pwd:string){
     let msg = "authentication fail"
-    if(username === "admin" && password === "admin123"){
-        this.authenticated = true;
-        this.username = username;
-        msg = "Login success"
-        this.router.navigate(['home'])
-    }else{
+
+    this.http.post<any>(this.url+"login", {username:uname, password:pwd}, {observe: 'response'}).subscribe(res => {
+      this.authenticated = true;
+      this.username = uname;
+      this.saveToken(res.headers.get('Authorization'));
+      msg = "Login success"
+      this.router.navigate(['home'])
+      
+    }, err => {
       msg = "Invalid username/password"
       this.username = "Not logged in"
       this.authenticated = false;
-    }
-    console.log(this.authenticated);
+      console.log(err);
+    })
+   
     return msg;
+  }
+
+  registerUser(user:User){
+    this.http.post<User>(this.url+"signup", user);
   }
 
   logout(){
     this.authenticated = false;
     this.username = "Not logged in!"
     this.router.navigate(['login']);
+    this.signOut();
+  }
+
+  signOut() {
+    window.sessionStorage.clear();
+  }
+
+  public saveToken(token: string) {
+    window.sessionStorage.removeItem('TOKEN_KEY');
+    window.sessionStorage.setItem('TOKEN_KEY', token);
+  }
+
+  public getToken(): string {
+    return sessionStorage.getItem('TOKEN_KEY');
   }
 }

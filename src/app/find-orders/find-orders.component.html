@@ -10,7 +10,6 @@
       <th scope="col">Customer's name</th>
       <th scope="col">Due Date</th>
       <th scope="col">Shipment Type</th>
-      <th scope="col">Courier</th>
     </tr>
   </thead>
   <tbody>
@@ -20,9 +19,8 @@
       <td>{{order.timestamp | date:'medium'}}</td>
       <td>{{order.orderStatus}}</td>
       <td><a [routerLink]="['../customers', order.customer.customerId]">{{order.customer.customerName}}</a></td>
-      <td>{{order.dueDate}}</td>
+      <td>{{order.dueDate | date:'medium'}}</td>
       <td>{{order.shipmentType}}</td>
-      <td>{{order.courier}}</td>
 
     </tr>
   </tbody>

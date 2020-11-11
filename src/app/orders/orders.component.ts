@@ -16,10 +16,12 @@ import { SalesOrdersService } from '../Services/sales-orders.service';
 export class OrdersComponent implements OnInit {
   isNew: boolean;
   order: SalesOrder = <SalesOrder> new Object();
+  loadedOrder: SalesOrder = <SalesOrder> new Object();
   customer : Customer = <Customer> new Object();
   courierObj : Courier = <Courier> new Object();
  
   orderItems: OrderItem[] = [];
+  isEdit: boolean = false;
 
     
   constructor(private route:ActivatedRoute, private router:Router,public crudActionService: CrudActionsManageService, private orderService: SalesOrdersService) { }
@@ -29,11 +31,11 @@ export class OrdersComponent implements OnInit {
     this.route.paramMap.subscribe(param => {
       let id = param.get('id');
       if(id != null || id != ""){
-        if(id != "new"){
+        // if(id != "new"){
           this.getOrder(+id);
-        }else {
-          this.onNewClick();
-        }
+        // }else {
+        //   this.onNewClick();
+        // }
       }
     })
 
@@ -51,24 +53,33 @@ export class OrdersComponent implements OnInit {
     // this.shipmentType = this.order.shipmentType;
     this.crudActionService.readonly();
     console.log(this.order)
-
+    this.loadedOrder = this.order;
     },
     err => console.log("error fetching inquiries"+err))
   }
 
-  onNewClick() {
-    this.isNew = true;
-    this.order = new SalesOrder();
-    this.order.orderDate = moment().format("YYYY-MM-DD");
-    this.order.orderStatus = "ACTIVE"
-    this.customer = new Customer();
-    this.crudActionService.editable();
-    this.orderItems = []
-  }
+  // onNewClick() {
+  //   this.isNew = true;
+  //   this.order = new SalesOrder();
+  //   this.order.orderDate = moment().format("YYYY-MM-DD");
+  //   this.order.orderStatus = "ACTIVE"
+  //   this.customer = new Customer();
+  //   this.crudActionService.editable();
+  //   this.orderItems = []
+  // }
 
   onEditClick() {
-    this.isNew = true;
+    this.isEdit = true;
     this.crudActionService.editable();
+  }
+
+  onCancelEditClick(){
+    this.isNew = false;
+    this.isEdit = false;
+    this.order = this.loadedOrder;
+    this.orderItems = [];
+    this.getOrder(this.loadedOrder.salesOrderId);
+    this.crudActionService.readonly();
   }
 
   onDeleteClick(id: number) {
@@ -84,6 +95,20 @@ export class OrdersComponent implements OnInit {
     });
   }
 
+  onSubmit(){
+    this.order.dueDate = moment(this.order.dueDate).format("YYYY-MM-DD");
+    this.orderService.addOrder(this.order).subscribe(order => {
+      console.log(order)
+      this.order = <SalesOrder> order;
+      this.order.dueDate = moment(order.dueDate).format("YYYY-MM-DD");
+      this.order.orderDate = moment(order.orderDate).format("YYYY-MM-DD");
+      this.customer = this.order.customer;
+      this.courierObj = this.order.courier;
+      this.orderItems = this.order.orderItems;
+    },
+    err => console.log(err));
+    this.onCancelEditClick();
+  }
   cancelOrder(){
     this.order
     let newOrder = new SalesOrder();

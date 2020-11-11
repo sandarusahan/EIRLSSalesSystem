@@ -1,3 +1,4 @@
+import { AuthenticateService } from './../Services/authenticate.service';
 import { Component, OnInit } from '@angular/core';
 import {
   Router,
@@ -14,7 +15,7 @@ import {
 })
 export class MainComponent implements OnInit {
   public showOverlay = true;
-  constructor(private router: Router) { }
+  constructor(private router: Router, private auth:AuthenticateService) { }
 
   ngOnInit() {
     this.router.events.subscribe((event: RouterEvent) => {
