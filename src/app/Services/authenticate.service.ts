@@ -15,7 +15,7 @@ export class AuthenticateService {
   authenticated:boolean = false;
   username:string = "Not logged in";
 
-  url = "http://sales-app-saho.herokuapp.com/users/"
+  url = "https://sales-app-saho.herokuapp.com/users/"
   // url = "http://localhost:8080/users/"
   constructor(private router:Router, private http:HttpClient) { }
 
