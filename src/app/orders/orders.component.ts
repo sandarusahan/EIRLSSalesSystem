@@ -19,7 +19,7 @@ export class OrdersComponent implements OnInit {
   loadedOrder: SalesOrder = <SalesOrder> new Object();
   customer : Customer = <Customer> new Object();
   courierObj : Courier = <Courier> new Object();
- 
+  inqTotal = 0;
   orderItems: OrderItem[] = [];
   isEdit: boolean = false;
 
@@ -50,6 +50,7 @@ export class OrdersComponent implements OnInit {
     this.courierObj = this.order.courier;
     this.orderItems = this.order.orderItems;
     
+    this.inqTotal = this.orderTotal();
     // this.shipmentType = this.order.shipmentType;
     this.crudActionService.readonly();
     console.log(this.order)
@@ -121,4 +122,11 @@ export class OrdersComponent implements OnInit {
     })
   }
 
+  orderTotal():number {
+    let total:number= 0;
+    for(let i=0;i<this.orderItems.length;i++){
+      total = total + (this.orderItems[i].qty * this.orderItems[i].productPrice);
+    }
+    return total;
+  }
 }

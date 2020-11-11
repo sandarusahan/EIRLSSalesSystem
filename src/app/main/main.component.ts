@@ -15,7 +15,7 @@ import {
 })
 export class MainComponent implements OnInit {
   public showOverlay = true;
-  constructor(private router: Router, private auth:AuthenticateService) { }
+  constructor(private router: Router, public auth:AuthenticateService) { }
 
   ngOnInit() {
     this.router.events.subscribe((event: RouterEvent) => {
