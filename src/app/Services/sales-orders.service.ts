@@ -40,7 +40,7 @@ export class SalesOrdersService {
 
   getOrdersByCustomerId(customerId : string) {
 
-    return this.http.get<SalesOrder[]>(this.orderUrl+"/customer/"+customerId)
+    return this.http.get<SalesOrder[]>(this.orderUrl+"customer/"+customerId)
   }
 
   getOrderTypeById(orderType, orderId){
