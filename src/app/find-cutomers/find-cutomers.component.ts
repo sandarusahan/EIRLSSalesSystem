@@ -17,13 +17,9 @@ export class FindCutomersComponent implements OnInit {
   constructor(private crudManager:CrudActionsManageService, private customerService:CustomerService, private router:Router, private route : ActivatedRoute, private auth : AuthenticateService) { }
 
   ngOnInit() {
-    if(this.auth.authenticated){
-      this.crudManager.show();
-      this.getCustomers();
-    }else{
-    this.router.navigate(['login']);
-    }
-    
+    this.auth.isAutherized("customers");
+    this.crudManager.show();
+    this.getCustomers();
   }
 
   getCustomers() {

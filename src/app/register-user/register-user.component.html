@@ -1,3 +1,72 @@
-<p>
-  register-user works!
-</p>
+<div class="btn-group ml-2 md-3" role="group">
+  <button class="btn btn-success" form="userRegForm" (click)="onSubmit(form)" form="orderForm">Submit</button>
+</div>
+<div class="container">
+  <form #form="ngForm" id="userRegForm">
+
+    <div class="form-group">
+      <label for="name">Employee's Name</label>
+      <input [(ngModel)]="user.name" name="name" type="text" class="form-control form-control-sm"
+        id="userName" required>
+    </div>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input [(ngModel)]="user.username" name="username" type="text" class="form-control form-control-sm"
+        id="username" [readonly]="isEdit" required>
+    </div>
+    <div *ngIf="!isEdit" class="form-group">
+      <label for="password">Password</label>
+      <input [(ngModel)]="user.password" name="password" type="password" class="form-control form-control-sm"
+        id="password" [readonly]="isEdit" required>
+    </div>
+    <div *ngIf="!isEdit" class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" class="form-control form-control-sm"
+        id="confirmPassword" [readonly]="isEdit" required>
+    </div>
+    <div class="form-group">
+      <label for="mobile">Employee's Mobile</label>
+      <input [(ngModel)]="user.mobile" name="mobile" type="text" class="form-control form-control-sm"
+        id="mobile">
+    </div>
+    <div class="form-group">
+      <label for="address">Employee's address</label>
+      <input [(ngModel)]="user.address" name="address" type="text" class="form-control form-control-sm"
+        id="userStatus">
+    </div>
+    <div class="form-group">
+      <label for="emergencyContact">Emergency Contact Number</label>
+      <input [(ngModel)]="user.emergencyContact" name="emergencyContact" type="text" class="form-control form-control-sm"
+        id="emergencyContact" required>
+    </div>
+    <div *ngIf="user.role!='ADMIN'" class="container shadow p-3 mb-5 mt-3 bg-white rounded">
+      <label for="customerCheck">Employee's Access</label>
+      <div class="form-check">
+        <input [(ngModel)]="customers" name="customers" type="checkbox" class="form-check-input form-check-input-sm"
+          id="customerCheck" required>
+        <label for="customerCheck">Manage Customers</label>
+      </div>
+      <div class="form-check">
+        <input [(ngModel)]="inquiries" name="inquiries" type="checkbox" class="form-check-input form-check-input-sm"
+          id="inquiriesCheck" required>
+        <label for="inquiriesCheck">Manage Inquiries</label>
+      </div>
+      <div class="form-check">
+        <input [(ngModel)]="orders" name="orders" type="checkbox" class="form-check-input form-check-input-sm"
+          id="ordersCheck" required>
+        <label for="customerCheck">Manage Orders</label>
+      </div>
+      <div class="form-check">
+        <input [(ngModel)]="returns" name="returns" type="checkbox" class="form-check-input form-check-input-sm"
+          id="returnsCheck" required>
+        <label for="returnsCheck">Manage Returns</label>
+      </div>
+      <div class="form-check">
+        <input [(ngModel)]="couriers" name="couriers" type="checkbox" class="form-check-input form-check-input-sm"
+          id="courierCheck" required>
+        <label for="courierCheck">Manage Couriers</label>
+      </div>
+    </div>
+    
+  </form>
+</div>

@@ -26,9 +26,10 @@ export class CustomersComponent implements OnInit {
   errBool: boolean = false;
   errMsg: string = "";
   mobNoValid: string = 'na';
-  constructor(private route: ActivatedRoute, private customerService: CustomerService, public crudActionService: CrudActionsManageService, private router: Router, private orderService:SalesOrdersService) {}
+  constructor(private route: ActivatedRoute, private customerService: CustomerService, public crudActionService: CrudActionsManageService, private router: Router, private orderService:SalesOrdersService, private auth:AuthenticateService) {}
 
   ngOnInit() {
+    this.auth.isAutherized("customers");
       this.route.paramMap.subscribe(param => {
         let id = param.get('id');
         if (id != "" || id != null) {

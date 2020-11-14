@@ -1,3 +1,4 @@
+import { AuthenticateService } from './../Services/authenticate.service';
 import { CourierService } from './../Services/courier.service';
 import { CustomerService } from './../Services/customer.service';
 import { Courier } from './../Models/Courier';
@@ -40,9 +41,10 @@ export class InquiryComponent implements OnInit {
   errBoolMob: boolean = false;
   inqTotal:number = 0;
   
-  constructor(private orderService : SalesOrdersService, private route:ActivatedRoute, public crudActionService: CrudActionsManageService, private router: Router, private customerService:CustomerService, private courierService : CourierService) { }
+  constructor(private orderService : SalesOrdersService, private route:ActivatedRoute, public crudActionService: CrudActionsManageService, private router: Router, private customerService:CustomerService, private courierService : CourierService, private auth:AuthenticateService) { }
 
   ngOnInit() {
+    this.auth.isAutherized("inquiries");
     this.route.paramMap.subscribe(param => {
       let id = param.get('id');
       if(id != null || id != ""){

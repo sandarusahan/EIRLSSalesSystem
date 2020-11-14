@@ -16,12 +16,8 @@ export class FindCourierComponent implements OnInit {
   constructor(private courierService:CourierService, private router:Router, private auth:AuthenticateService) { }
 
   ngOnInit() {
-    if(this.auth.authenticated){
-      this.courierService.getAllCouriers().subscribe(res => this.couriers = res);
-
-    }else{
-      this.router.navigate(['login'])
-    }
+    this.auth.isAutherized("couriers");
+    this.courierService.getAllCouriers().subscribe(res => this.couriers = res);
   }
 
   addCourier(courier:Courier){

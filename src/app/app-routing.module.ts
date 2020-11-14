@@ -1,3 +1,6 @@
+import { NotAutherizedComponent } from './not-autherized/not-autherized.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { RegisterUserComponent } from './register-user/register-user.component';
 import { LoginComponent } from './login/login.component';
 import { CourierComponent } from './courier/courier.component';
 import { FindCourierComponent } from './find-courier/find-courier.component';
@@ -30,6 +33,9 @@ const routes: Routes = [
   {path:'returns/:id', component: ReturnsComponent},
   {path:'courier', component: FindCourierComponent},
   {path:'courier/:id', component: CourierComponent},
+  {path:'manage/employees', component: UserListComponent},
+  {path:'manage/employees/:id', component: RegisterUserComponent},
+  {path:'unautherized', component: NotAutherizedComponent},
   {path:'**', component: NotFoundComponent}
   
 ];

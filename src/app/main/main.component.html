@@ -1,4 +1,4 @@
-<app-navbar *ngIf="auth.authenticated"></app-navbar>
+<app-navbar *ngIf="auth.getUsername() != null"></app-navbar>
 <div class="my-overlay" *ngIf="showOverlay">
     <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
 </div>

@@ -1,0 +1,25 @@
+<table class="table table-sm table-hover mt-5">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Username</th>
+      <th scope="col">Mobile</th>
+      <th scope="col">Address</th>
+      <th scope="col">Emergency Contact</th>
+      <th scope="col">User Access</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users; let i = index" [routerLink]="[user.username]">
+      <td>{{i+1}}</td>
+      <td>{{user.name}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.mobile}}</td>
+      <td>{{user.address}}</td>
+      <td>{{user.emergencyContact}}</td>
+      <td>{{user.userAccess}}</td>
+
+    </tr>
+  </tbody>
+</table>

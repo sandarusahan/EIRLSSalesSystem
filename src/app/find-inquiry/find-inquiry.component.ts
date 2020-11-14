@@ -16,33 +16,18 @@ export class FindInquiryComponent implements OnInit {
   constructor(private crudManager:CrudActionsManageService, private ordersService:SalesOrdersService, private router:Router, private auth:AuthenticateService) { }
 
   ngOnInit() {
-
-    if(this.auth.authenticated){
-      this.crudManager.show();
-
-      this.ordersService.getInquiries().subscribe(res => {
-        console.log(res)
-        this.inquiries = res;
-      })
-    }else{
-      this.router.navigate(['login'])
-    }
-    
-  }
-
-  ngOnChanges(){
+    this.auth.isAutherized("inquiries");
+    this.crudManager.show();
     this.ordersService.getInquiries().subscribe(res => {
-      console.log("on changes")
       this.inquiries = res;
     })
   }
 
-  // ngDoCheck(){
-  //   this.ordersService.getInquiries().subscribe(res => {
-  //     console.log("do check")
-  //     this.inquiries = res;
-  //   })
-  // }
+  ngOnChanges(){
+    this.ordersService.getInquiries().subscribe(res => {
+      this.inquiries = res;
+    })
+  }
 
   onNewClick() {
     this.router.navigate(['inquiry','new']);

@@ -1,3 +1,4 @@
+import { AuthenticateService } from './../Services/authenticate.service';
 import { Courier } from './../Models/Courier';
 import { Customer } from './../Models/Customer';
 import { SalesOrdersService } from './../Services/sales-orders.service';
@@ -24,9 +25,10 @@ export class ReturnsComponent implements OnInit {
   returnReady:boolean = false;
   orderId
   orderItems: OrderItem[] =[];
-  constructor(private orderService : SalesOrdersService, private router: Router, private route:ActivatedRoute) { }
+  constructor(private orderService : SalesOrdersService, private router: Router, private route:ActivatedRoute, private auth:AuthenticateService) { }
 
   ngOnInit() {
+    this.auth.isAutherized("returns");
     this.route.paramMap.subscribe(param => {
       let id = param.get('id');
       if(id != null || id != ""){
