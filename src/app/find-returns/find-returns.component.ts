@@ -18,18 +18,11 @@ export class FindReturnsComponent implements OnInit {
   constructor(private crudManager:CrudActionsManageService, private orderService : SalesOrdersService, private auth:AuthenticateService, private router: Router) { }
 
   ngOnInit() {
-    if(this.auth.authenticated){
-      this.crudManager.show()
-
+    this.auth.isAutherized("returns");
+    this.crudManager.show()
     this.orderService.getReturnsForCredit().subscribe(res => this.returnsCred = res)
     this.orderService.getReturnsForExchage().subscribe(res => this.returnsEx = res)
     this.orderService.getReturnsForRepair().subscribe(res => this.returnsRep = res)
-    
-    }else{
-      this.router.navigate(['login'])
-
-    }
-    
   }
 
   onNewClick() {

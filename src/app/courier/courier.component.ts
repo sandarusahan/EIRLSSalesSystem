@@ -1,3 +1,4 @@
+import { AuthenticateService } from './../Services/authenticate.service';
 import { CourierService } from './../Services/courier.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -13,9 +14,10 @@ export class CourierComponent implements OnInit {
 
   courierObj:Courier = new Courier;
   isNew: boolean = false;
-  constructor(private route:ActivatedRoute,private router:Router ,private courierService:CourierService, public crudActionService:CrudActionsManageService) { }
+  constructor(private route:ActivatedRoute,private router:Router ,private courierService:CourierService, public crudActionService:CrudActionsManageService, private auth:AuthenticateService) { }
 
   ngOnInit() {
+    this.auth.isAutherized("couriers");
     this.isNew = false;
     this.route.paramMap.subscribe(param => {
       let id = param.get('id');

@@ -4,7 +4,7 @@
     </div>
     <div class="btn-group ml-3" role="group">
         <!-- <button type="button" class="btn btn-secondary" (click)="onNewClick()" [disabled]="isNew">New</button> -->
-    <button type="button" class="btn btn-secondary" (click)="onEditClick()" [hidden]="isEdit">Edit</button>
+    <button type="button" class="btn btn-secondary" [hidden]="order.orderStatus == 'Completed'" (click)="onEditClick()" [hidden]="isEdit">Edit</button>
     <button type="button" class="btn btn-secondary" (click)="onCancelEditClick()" [hidden]="!isEdit">Cancel Edit</button>
     <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">Delete</button>
 
@@ -33,7 +33,9 @@
 
     <div class="btn-group ml-2" role="group">
       <button class="btn btn-success" [disabled]="!isEdit" (click)="onSubmit()" form="orderForm">Submit</button>
-      <button class="btn btn-success" [disabled]="order.orderStatus == 'Cancelled'" (click)="cancelOrder()">Cancel order</button>
+      <button class="btn btn-success" [hidden]="order.orderStatus != 'NEW'" [disabled]="order.orderStatus == 'Dispatched'" (click)="dispatchOrder()">Dispatch order</button>
+      <button class="btn btn-success" [hidden]="order.orderStatus != 'Dispatched'" [disabled]="order.orderStatus == 'Completed'" (click)="completeOrder()">Complete order</button>
+      <button class="btn btn-success" [hidden]="order.orderStatus == 'Completed' || order.orderStatus == 'Dispatched'" [disabled]="order.orderStatus == 'Cancelled'" (click)="cancelOrder()">Cancel order</button>
     </div>
   </div>
 <form #form="ngForm" id="orderForm">

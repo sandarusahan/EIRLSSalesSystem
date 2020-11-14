@@ -1,3 +1,4 @@
+import { AuthenticateService } from './../Services/authenticate.service';
 import { Courier } from './../Models/Courier';
 import { CrudActionsManageService } from './../Services/crud-actions-manage.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,18 +25,14 @@ export class OrdersComponent implements OnInit {
   isEdit: boolean = false;
 
     
-  constructor(private route:ActivatedRoute, private router:Router,public crudActionService: CrudActionsManageService, private orderService: SalesOrdersService) { }
+  constructor(private route:ActivatedRoute, private router:Router,public crudActionService: CrudActionsManageService, private orderService: SalesOrdersService, private auth:AuthenticateService) { }
 
   ngOnInit() {
-    
+    this.auth.isAutherized("orders");
     this.route.paramMap.subscribe(param => {
       let id = param.get('id');
       if(id != null || id != ""){
-        // if(id != "new"){
-          this.getOrder(+id);
-        // }else {
-        //   this.onNewClick();
-        // }
+        this.getOrder(+id);
       }
     })
 
@@ -110,18 +107,40 @@ export class OrdersComponent implements OnInit {
     err => console.log(err));
     this.onCancelEditClick();
   }
+
   cancelOrder(){
-    this.order
     let newOrder = new SalesOrder();
     newOrder = this.order;
     newOrder.orderStatus = "Cancelled"
 
-    this.orderService.addOrder(newOrder).subscribe(inq => {
-      this.order = inq;
+    this.orderService.addOrder(newOrder).subscribe(order => {
+      this.order = order;
       this.isNew = false;
-    })
+    });
   }
 
+
+  dispatchOrder(){
+    let newOrder = new SalesOrder();
+    newOrder = this.order;
+    newOrder.orderStatus = "Dispatched"
+
+    this.orderService.addOrder(newOrder).subscribe(order => {
+      this.order = order;
+      this.isNew = false;
+    });
+  }
+
+  completeOrder(){
+    let newOrder = new SalesOrder();
+    newOrder = this.order;
+    newOrder.orderStatus = "Completed"
+
+    this.orderService.addOrder(newOrder).subscribe(order => {
+      this.order = order;
+      this.isNew = false;
+    });
+  }
   orderTotal():number {
     let total:number= 0;
     for(let i=0;i<this.orderItems.length;i++){

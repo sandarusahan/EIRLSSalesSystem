@@ -1,3 +1,23 @@
-<h4>Orders count - {{ordersCount}}</h4><br>
-<h4>Inquries count - {{inqCount}}</h4><br>
-<h4>Returns count - {{returnsCount}}</h4>
+<div class="card-deck">
+    <div class="card text-center" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">New Orders</h5>
+        <h3 class="card-text">{{ordersCount}}</h3>
+        <a href="#" class="btn btn-primary">View New Order</a>
+    </div>
+    </div>
+    <div class="card text-center" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">Dispatched Orders</h5>
+        <h3 class="card-text">{{inqCount}}</h3>
+        <a href="#" class="btn btn-primary">View Dispatched Orders</a>
+    </div>
+    </div>
+    <div class="card text-center" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">Completed Orders</h5>
+        <h3 class="card-text">{{returnsCount}}</h3>
+        <a href="#" class="btn btn-primary">View Completed Orders</a>
+    </div>
+    </div>
+</div>

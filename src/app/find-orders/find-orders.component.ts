@@ -16,15 +16,9 @@ export class FindOrdersComponent implements OnInit {
   constructor(private crudManager:CrudActionsManageService, private orderService : SalesOrdersService, private router:Router, private auth:AuthenticateService) { }
 
   ngOnInit() {
-    if(this.auth.authenticated){
-      this.crudManager.show();
-
-      this.orderService.getOrders().subscribe(res => this.orders = res)
-    }else{
-      this.router.navigate(['login']);
-
-    }
-    
+    this.auth.isAutherized("orders");
+    this.crudManager.show();
+    this.orderService.getOrders().subscribe(res => this.orders = res)    
   }
 
   onNewClick() {

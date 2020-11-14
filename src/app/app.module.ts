@@ -29,6 +29,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavigatorPipe } from './pipes/navigator.pipe';
 import { OrderTypePipe } from './pipes/order-type.pipe';
 import { RegisterUserComponent } from './register-user/register-user.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { NotAutherizedComponent } from './not-autherized/not-autherized.component';
 
 
 @NgModule({
@@ -54,7 +56,9 @@ import { RegisterUserComponent } from './register-user/register-user.component';
     DashboardComponent,
     NavigatorPipe,
     OrderTypePipe,
-    RegisterUserComponent
+    RegisterUserComponent,
+    UserListComponent,
+    NotAutherizedComponent
     
   ],
   imports: [
